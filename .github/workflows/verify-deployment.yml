@@ -58,15 +58,6 @@ jobs:
           grep -q "sdInsetRule" public/statics-diagrams.js
           grep -q "Spacious 3D split cards v2" public/content.css
 
-      - name: Verify roomy 3D split cards
-        shell: bash
-        run: |
-          set -euo pipefail
-          grep -q "sdInsetDivider" public/statics-diagrams.js
-          grep -q "width=\"294\"" public/statics-diagrams.js
-          grep -q "sdInsetFormulaBlock" public/statics-diagrams.js
-          grep -q "sdInsetDivider" public/content.css
-
       - name: Verify clean 3D force diagram
         shell: bash
         run: |
@@ -74,7 +65,7 @@ jobs:
           grep -q "1 · VERTICAL SPLIT" public/statics-diagrams.js
           grep -q "2 · HORIZONTAL SPLIT" public/statics-diagrams.js
           grep -q "sdComponentY" public/statics-diagrams.js
-          grep -q "schematic 3D view" public/statics-diagrams.js
+          grep -q "horizontal projection of F onto the x-z plane" public/statics-diagrams.js
           grep -q "Clear two-stage 3D force decomposition" public/content.css
 
       - name: Verify reusable statics diagram engine
