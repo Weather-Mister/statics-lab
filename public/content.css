@@ -191,11 +191,13 @@ body.whiteboardFullscreenOpen{overflow:hidden!important;overscroll-behavior:none
 .sdInset rect{fill:#f1ebdf;stroke:#bdb3a4;stroke-width:1}
 .sdInsetTitle{fill:#2f5f5b;font-size:8px;font-weight:900;letter-spacing:.08em}
 .sdInsetNote{fill:#74766f;font-size:7.5px}
-.sdInsetFormula{fill:#36433e;font-size:8.5px;font-weight:800}
+.sdInsetFormula{fill:#36433e;font-size:9px;font-weight:800}
+.sdInsetDivider{stroke:#d1c7b8;stroke-width:1}
+.sdInsetFormulaBlock{opacity:1}
 .sdForce3D .sdAngleArc{stroke:#a56a3b;stroke-width:1.6;fill:none}
-.questionDiagram .sdForce3D{max-height:310px}
-.fullscreenProblemDiagram .sdForce3D{width:min(100%,720px)}
+.questionDiagram .sdForce3D{max-height:330px}
+.fullscreenProblemDiagram .sdForce3D{width:min(100%,760px)}
 @media(max-width:700px){
-  .questionDiagram .sdForce3D{max-height:280px}
-  .sdForce3D .sdInsetFormula{font-size:8px}
+  .questionDiagram .sdForce3D{max-height:300px}
+  .sdForce3D .sdInsetFormula{font-size:8.5px}
 }

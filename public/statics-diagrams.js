@@ -32,24 +32,25 @@
     const th=Number(theta)*Math.PI/180, ph=Number(phi)*Math.PI/180;
     const h=Math.sin(th), dx=h*Math.cos(ph), dy=Math.cos(th), dz=h*Math.sin(ph);
 
-    // Main isometric sketch: deliberately roomy and schematic.  The two inset
-    // right triangles carry the actual angle relationships without perspective distortion.
-    const O={x:135,y:222};
-    const ex={x:230,y:0}, ey={x:0,y:-168}, ez={x:-82,y:48};
+    // Main schematic 3D view.
+    const O={x:125,y:230};
+    const ex={x:220,y:0}, ey={x:0,y:-165}, ez={x:-78,y:46};
     const project=(x,y,z)=>({x:O.x+ex.x*x+ey.x*y+ez.x*z,y:O.y+ex.y*x+ey.y*y+ez.y*z});
     const X=project(1.02,0,0), Y=project(0,1.02,0), Z=project(0,0,1.02);
     const H=project(dx,0,dz), P=project(dx,dy,dz);
     const Xh=project(dx,0,0);
 
-    const splitScale=78;
+    // Exact 2D teaching insets. Keep the sketch compact and reserve a clean
+    // formula column so labels never collide with the geometry.
+    const splitScale=64;
     const fyLen=splitScale*Math.cos(th), fhLen=splitScale*Math.sin(th);
-    const vO={x:448,y:135}, vTop={x:448,y:135-fyLen}, vEnd={x:448+fhLen,y:135-fyLen};
+    const vO={x:70,y:112}, vTop={x:70,y:112-fyLen}, vEnd={x:70+fhLen,y:112-fyLen};
 
-    const planeScale=76;
+    const planeScale=64;
     const fxLen=planeScale*Math.cos(ph), fzLen=planeScale*Math.sin(ph);
-    const pO={x:448,y:272}, pX={x:448+fxLen,y:272}, pEnd={x:448+fxLen,y:272-fzLen};
+    const pO={x:64,y:108}, pX={x:64+fxLen,y:108}, pEnd={x:64+fxLen,y:108-fzLen};
 
-    return svgStart('3D force decomposed into vertical, horizontal, x, and z components','0 0 650 310','sdForce3D')+
+    return svgStart('3D force decomposed into vertical, horizontal, x, and z components','0 0 700 330','sdForce3D')+
       defs(id)+
 
       // Main 3D picture.
@@ -68,46 +69,56 @@
       '<line class="sdForce" x1="'+O.x+'" y1="'+O.y+'" x2="'+P.x+'" y2="'+P.y+'" marker-end="url(#'+id+'Force)"/>'+
       '<circle class="sdOrigin" cx="'+O.x+'" cy="'+O.y+'" r="4"/>'+
       '<circle class="sdPoint" cx="'+H.x+'" cy="'+H.y+'" r="4"/>'+
-      label((O.x+P.x)/2-7,(O.y+P.y)/2-14,'F = '+F+' N','sdForceLabel')+
+      label((O.x+P.x)/2-8,(O.y+P.y)/2-14,'F = '+F+' N','sdForceLabel')+
       label((O.x+H.x)/2,(O.y+H.y)/2+18,'Fh','sdComponentHLabel','middle')+
       label(H.x+12,(H.y+P.y)/2,'Fy','sdComponentYLabel')+
       label(O.x+8,O.y+18,'O','sdPointLabel')+
       label(H.x+9,H.y+15,'H','sdPointLabel')+
-      label(84,294,'H is the horizontal shadow of F','sdDiagramCaption')+
-      label(84,306,'(schematic 3D view — angles are shown exactly in the insets)','sdDiagramCaption')+
+      label(64,307,'H is the horizontal shadow of F','sdDiagramCaption')+
+      label(64,321,'schematic 3D view · exact angle geometry is isolated at right','sdDiagramCaption')+
 
-      // Vertical split inset: exact right-triangle relation for theta_y.
-      '<g class="sdInset" transform="translate(405 20)">'+
-        '<rect x="0" y="0" width="225" height="125"/>'+
-        label(12,18,'1 · VERTICAL SPLIT','sdInsetTitle')+
-        label(12,35,'angle measured from +y','sdInsetNote')+
-        '<line class="sdComponentY" x1="'+(vO.x-405)+'" y1="'+(vO.y-20)+'" x2="'+(vTop.x-405)+'" y2="'+(vTop.y-20)+'" marker-end="url(#'+id+'CompY)"/>'+
-        '<line class="sdComponentH" x1="'+(vTop.x-405)+'" y1="'+(vTop.y-20)+'" x2="'+(vEnd.x-405)+'" y2="'+(vEnd.y-20)+'" marker-end="url(#'+id+'Cable)"/>'+
-        '<line class="sdForce" x1="'+(vO.x-405)+'" y1="'+(vO.y-20)+'" x2="'+(vEnd.x-405)+'" y2="'+(vEnd.y-20)+'" marker-end="url(#'+id+'Force)"/>'+
-        '<path class="sdAngleArc" d="M '+(vO.x-405)+' '+(vO.y-20-24)+' A 24 24 0 0 1 '+(vO.x-405+24*Math.sin(th))+' '+(vO.y-20-24*Math.cos(th))+'"/>'+
-        label(vO.x-405+10,vO.y-20-31,'θy = '+theta+'°','sdAngleText')+
-        label(vTop.x-405-8,(vO.y+vTop.y)/2-20,'Fy','sdComponentYLabel','end')+
-        label((vTop.x+vEnd.x)/2-405,vTop.y-20-8,'Fh','sdComponentHLabel','middle')+
-        label((vO.x+vEnd.x)/2-405+7,(vO.y+vEnd.y)/2-20-4,'F','sdForceLabel')+
-        label(132,92,'Fy = F cos θy','sdInsetFormula')+
-        label(132,108,'Fh = F sin θy','sdInsetFormula')+
+      // Vertical split inset.
+      '<g class="sdInset" transform="translate(390 12)">'+
+        '<rect x="0" y="0" width="294" height="142"/>'+
+        '<line class="sdInsetDivider" x1="158" y1="48" x2="158" y2="128"/>'+
+        label(14,22,'1 · VERTICAL SPLIT','sdInsetTitle')+
+        label(14,40,'angle measured from +y','sdInsetNote')+
+        '<g transform="translate(4 18)">'+
+          '<line class="sdComponentY" x1="'+vO.x+'" y1="'+vO.y+'" x2="'+vTop.x+'" y2="'+vTop.y+'" marker-end="url(#'+id+'CompY)"/>'+
+          '<line class="sdComponentH" x1="'+vTop.x+'" y1="'+vTop.y+'" x2="'+vEnd.x+'" y2="'+vEnd.y+'" marker-end="url(#'+id+'Cable)"/>'+
+          '<line class="sdForce" x1="'+vO.x+'" y1="'+vO.y+'" x2="'+vEnd.x+'" y2="'+vEnd.y+'" marker-end="url(#'+id+'Force)"/>'+
+          '<path class="sdAngleArc" d="M '+vO.x+' '+(vO.y-22)+' A 22 22 0 0 1 '+(vO.x+22*Math.sin(th))+' '+(vO.y-22*Math.cos(th))+'"/>'+
+          label(vO.x+8,vO.y-28,'θy = '+theta+'°','sdAngleText')+
+          label(vTop.x-10,(vO.y+vTop.y)/2,'Fy','sdComponentYLabel','end')+
+          label((vTop.x+vEnd.x)/2,vTop.y-8,'Fh','sdComponentHLabel','middle')+
+          label((vO.x+vEnd.x)/2+7,(vO.y+vEnd.y)/2-7,'F','sdForceLabel')+
+        '</g>'+
+        '<g class="sdInsetFormulaBlock" transform="translate(176 76)">'+
+          label(0,0,'Fy = F cos θy','sdInsetFormula')+
+          label(0,24,'Fh = F sin θy','sdInsetFormula')+
+        '</g>'+
       '</g>'+
 
-      // Horizontal plan-view inset: x-z plane shown without perspective distortion.
-      '<g class="sdInset" transform="translate(405 160)">'+
-        '<rect x="0" y="0" width="225" height="130"/>'+
-        label(12,18,'2 · HORIZONTAL SPLIT','sdInsetTitle')+
-        label(12,35,'plan view of the x-z plane','sdInsetNote')+
-        '<line class="sdComponentX" x1="'+(pO.x-405)+'" y1="'+(pO.y-160)+'" x2="'+(pX.x-405)+'" y2="'+(pX.y-160)+'" marker-end="url(#'+id+'CompX)"/>'+
-        '<line class="sdComponentZ" x1="'+(pX.x-405)+'" y1="'+(pX.y-160)+'" x2="'+(pEnd.x-405)+'" y2="'+(pEnd.y-160)+'" marker-end="url(#'+id+'CompZ)"/>'+
-        '<line class="sdComponentH" x1="'+(pO.x-405)+'" y1="'+(pO.y-160)+'" x2="'+(pEnd.x-405)+'" y2="'+(pEnd.y-160)+'" marker-end="url(#'+id+'Cable)"/>'+
-        '<path class="sdAngleArc" d="M '+(pO.x-405+24)+' '+(pO.y-160)+' A 24 24 0 0 0 '+(pO.x-405+24*Math.cos(ph))+' '+(pO.y-160-24*Math.sin(ph))+'"/>'+
-        label(pO.x-405+29,pO.y-160-8,'φ = '+phi+'°','sdAngleText')+
-        label((pO.x+pX.x)/2-405,pO.y-160+18,'Fx','sdComponentXLabel','middle')+
-        label(pX.x-405+10,(pX.y+pEnd.y)/2-160,'Fz','sdComponentZLabel')+
-        label((pO.x+pEnd.x)/2-405-4,(pO.y+pEnd.y)/2-160-9,'Fh','sdComponentHLabel')+
-        label(132,95,'Fx = Fh cos φ','sdInsetFormula')+
-        label(132,112,'Fz = Fh sin φ','sdInsetFormula')+
+      // Horizontal split inset.
+      '<g class="sdInset" transform="translate(390 170)">'+
+        '<rect x="0" y="0" width="294" height="142"/>'+
+        '<line class="sdInsetDivider" x1="158" y1="48" x2="158" y2="128"/>'+
+        label(14,22,'2 · HORIZONTAL SPLIT','sdInsetTitle')+
+        label(14,40,'plan view of the x-z plane','sdInsetNote')+
+        '<g transform="translate(7 18)">'+
+          '<line class="sdComponentX" x1="'+pO.x+'" y1="'+pO.y+'" x2="'+pX.x+'" y2="'+pX.y+'" marker-end="url(#'+id+'CompX)"/>'+
+          '<line class="sdComponentZ" x1="'+pX.x+'" y1="'+pX.y+'" x2="'+pEnd.x+'" y2="'+pEnd.y+'" marker-end="url(#'+id+'CompZ)"/>'+
+          '<line class="sdComponentH" x1="'+pO.x+'" y1="'+pO.y+'" x2="'+pEnd.x+'" y2="'+pEnd.y+'" marker-end="url(#'+id+'Cable)"/>'+
+          '<path class="sdAngleArc" d="M '+(pO.x+22)+' '+pO.y+' A 22 22 0 0 0 '+(pO.x+22*Math.cos(ph))+' '+(pO.y-22*Math.sin(ph))+'"/>'+
+          label(pO.x+28,pO.y-8,'φ = '+phi+'°','sdAngleText')+
+          label((pO.x+pX.x)/2,pO.y+20,'Fx','sdComponentXLabel','middle')+
+          label(pX.x+10,(pX.y+pEnd.y)/2,'Fz','sdComponentZLabel')+
+          label((pO.x+pEnd.x)/2,(pO.y+pEnd.y)/2-10,'Fh','sdComponentHLabel','middle')+
+        '</g>'+
+        '<g class="sdInsetFormulaBlock" transform="translate(176 76)">'+
+          label(0,0,'Fx = Fh cos φ','sdInsetFormula')+
+          label(0,24,'Fz = Fh sin φ','sdInsetFormula')+
+        '</g>'+
       '</g>'+
     '</svg>';
   }
