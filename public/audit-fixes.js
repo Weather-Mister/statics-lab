@@ -2,8 +2,21 @@
   const P=window.PREQUIZ;
   if(!P) return;
 
-  const svg=(body,label)=>`<svg class="auditDiagram" viewBox="0 0 420 175" role="img" aria-label="${label}">${body}</svg>`;
-  const arrow=(x1,y1,x2,y2,t)=>`<line class="qd-force" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><polygon points="${x2-5},${y2-10} ${x2+5},${y2-10} ${x2},${y2}" fill="#a65353"/><text x="${x2+8}" y="${y2-5}">${t}</text>`;
+  const svg=(body,label)=>`<svg class="auditDiagram" viewBox="0 0 420 175" role="img" aria-label="${label}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto"><style>
+    .qd-line{stroke:#43534e;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .qd-force{stroke:#a65353;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .qd-cable{stroke:#2f7774;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;fill:#1f2b27}
+    .forceLabel{font-weight:800;fill:#7d3f3f}
+  </style>${body}</svg>`;
+  const arrow=(x1,y1,x2,y2,t)=>{
+    const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L;
+    const bx=x2-ux*11,by=y2-uy*11,px=-uy*5,py=ux*5;
+    const points=`${x2},${y2} ${bx+px},${by+py} ${bx-px},${by-py}`;
+    const lx=x2+(Math.abs(uy)>.8?8:(ux>=0?8:-28));
+    const ly=y2+(uy>0?16:-7);
+    return `<line class="qd-force" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><polygon points="${points}" fill="#a65353"/><text class="forceLabel" x="${lx}" y="${ly}">${t}</text>`;
+  };
   const fbdVisuals=String.raw`
   <section class="lessonSection workedSection auditUpgrade">
     <div class="sectionNo">FBD</div><div class="sectionContent">
