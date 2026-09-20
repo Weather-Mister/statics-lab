@@ -174,3 +174,28 @@ body.whiteboardFullscreenOpen{overflow:hidden!important;overscroll-behavior:none
 .questionDiagram .sdDiagram{max-height:260px}
 .fullscreenProblemDiagram .sdDiagram{width:min(100%,560px);max-height:none}
 @media(max-width:600px){.sdLegend{display:none}.sdDiagram text{font-size:10px}.sdDimText{font-size:8px}}
+
+
+/* ===== Clear two-stage 3D force decomposition ===== */
+.sdCompXHead{fill:#b47a47}.sdCompYHead{fill:#3f7398}.sdCompZHead{fill:#6b8068}
+.sdComponentH{stroke:#2f7774;stroke-width:2.6;fill:none}
+.sdComponentY{stroke:#3f7398;stroke-width:2.6;fill:none}
+.sdComponentX{stroke:#b47a47;stroke-width:2.6;fill:none}
+.sdComponentZ{stroke:#6b8068;stroke-width:2.6;fill:none}
+.sdComponentHLabel{fill:#2f7774;font-size:10px;font-weight:900}
+.sdComponentYLabel{fill:#3f7398;font-size:10px;font-weight:900}
+.sdComponentXLabel{fill:#9a6335;font-size:10px;font-weight:900}
+.sdComponentZLabel{fill:#5e765c;font-size:10px;font-weight:900}
+.sdOrigin{fill:#384640;stroke:#fffaf0;stroke-width:1.5}
+.sdDiagramCaption{fill:#7a786f;font-size:8px}
+.sdInset rect{fill:#f1ebdf;stroke:#bdb3a4;stroke-width:1}
+.sdInsetTitle{fill:#2f5f5b;font-size:8px;font-weight:900;letter-spacing:.08em}
+.sdInsetNote{fill:#74766f;font-size:7.5px}
+.sdInsetFormula{fill:#36433e;font-size:8.5px;font-weight:800}
+.sdForce3D .sdAngleArc{stroke:#a56a3b;stroke-width:1.6;fill:none}
+.questionDiagram .sdForce3D{max-height:310px}
+.fullscreenProblemDiagram .sdForce3D{width:min(100%,720px)}
+@media(max-width:700px){
+  .questionDiagram .sdForce3D{max-height:280px}
+  .sdForce3D .sdInsetFormula{font-size:8px}
+}

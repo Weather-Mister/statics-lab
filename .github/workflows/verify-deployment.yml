@@ -49,6 +49,16 @@ jobs:
           grep -q "setPanelPosition" public/calculator.js
           grep -q "cursor:grab" public/calculator.css
 
+      - name: Verify clean 3D force diagram
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "1 · VERTICAL SPLIT" public/statics-diagrams.js
+          grep -q "2 · HORIZONTAL SPLIT" public/statics-diagrams.js
+          grep -q "sdComponentY" public/statics-diagrams.js
+          grep -q "schematic 3D view" public/statics-diagrams.js
+          grep -q "Clear two-stage 3D force decomposition" public/content.css
+
       - name: Verify reusable statics diagram engine
         shell: bash
         run: |
@@ -58,7 +68,7 @@ jobs:
           grep -q "window.StaticsDiagrams" public/statics-diagrams.js
           grep -q "StaticsDiagrams.force3D" public/quiz1-upgrade.js
           grep -q "Reusable Statics vector-diagram engine" public/content.css
-          grep -q 'src="./statics-diagrams.js?v=1"' public/index.html
+          grep -q 'src="./statics-diagrams.js?v=2"' public/index.html
 
       - name: Verify visual explanation layer
         shell: bash
