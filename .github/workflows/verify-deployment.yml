@@ -60,6 +60,15 @@ jobs:
           grep -q "Beam force-system reduction" public/worked-example-visuals.js
           grep -q "Four complete synthesis examples" public/worked-example-visuals.js
 
+      - name: Verify subtle old-PC styling
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "Subtle old-PC workstation polish" public/old-pc.css
+          grep -q "repeating-linear-gradient" public/old-pc.css
+          grep -q "outline:1px dotted" public/old-pc.css
+          grep -q "prefers-reduced-motion" public/old-pc.css
+
       - name: Verify deployed frontend byte-for-byte
         shell: bash
         run: |
@@ -89,6 +98,7 @@ jobs:
           check_file "visual-explanations.js" "public/visual-explanations.js"
           check_file "worked-example-visuals.css" "public/worked-example-visuals.css"
           check_file "worked-example-visuals.js" "public/worked-example-visuals.js"
+          check_file "old-pc.css" "public/old-pc.css"
           check_file "content.css" "public/content.css"
           check_file "favicon.svg" "public/favicon.svg"
           check_file "prequiz-content.js" "public/prequiz-content.js"
@@ -110,6 +120,7 @@ jobs:
           grep -q 'src="./visual-explanations.js?v=1"' /tmp/live-index.html
           grep -q 'href="./worked-example-visuals.css?v=1"' /tmp/live-index.html
           grep -q 'src="./worked-example-visuals.js?v=1"' /tmp/live-index.html
+          grep -q 'href="./old-pc.css?v=1"' /tmp/live-index.html
           echo "OK index.html and GitHub Pages path rewriting"
 
       - name: Verify Supabase profile backend and CORS
