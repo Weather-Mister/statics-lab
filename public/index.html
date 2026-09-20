@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f2efe6" />
+  <title>Statics Lab</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <script>
+    window.__STATICS_BUILD__ = '22';
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+      svg: { fontCache: 'global' },
+      startup: { typeset: false }
+    };
+  </script>
+  <script id="MathJax-script" defer src="./vendor/mathjax-tex-svg.js?v=22"></script>
+  <link rel="stylesheet" href="./styles.css?v=22" />
+  <link rel="stylesheet" href="./content.css?v=22" />
+</head>
+<body>
+  <div class="appFrame">
+    <header class="commandBar">
+      <div class="wordmark">
+        <div class="trussMark" aria-hidden="true">
+          <span class="trussNode n1"></span><span class="trussNode n2"></span><span class="trussNode n3"></span>
+          <span class="trussLine l1"></span><span class="trussLine l2"></span><span class="trussLine l3"></span>
+        </div>
+        <div>
+          <div class="wordmarkTop">ENGINEERING MECHANICS · ME1005</div>
+          <div class="wordmarkMain">STATICS <span>LAB</span></div>
+        </div>
+      </div>
+
+      <div class="commandCenter">
+        <div class="courseProgress">
+          <div class="courseProgressReadout"><span>SYLLABUS STUDY PROGRESS</span><strong id="progressPercent">0%</strong></div>
+          <div class="progressTrack"><div id="progressFill" class="progressFill"></div></div>
+        </div>
+        <button id="cloudProfileButton" class="profileControl" type="button">
+          <span class="profileControlTop">PROFILE / SAVE</span>
+          <span class="profileControlMain"><span id="cloudDot" class="cloudDot"></span><span id="cloudProfileMainText">Local workspace</span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="workbench">
+      <aside class="instrumentRail">
+        <div class="railHeader">
+          <span class="railIndex">01</span>
+          <div><small>SEMESTER MAP</small><strong>16-Week Plan</strong></div>
+        </div>
+
+        <section class="lessonJump">
+          <label for="lessonSelect">ACTIVE WEEK</label>
+          <div class="selectWrap"><select id="lessonSelect" class="lessonSelect"></select></div>
+          <div class="stationReadout"><span id="lessonPosition">Lesson 1</span><b id="lessonStatus">Not completed</b></div>
+        </section>
+
+        <section class="outlineModule">
+          <div class="outlineHeader">
+            <div><small>SEQUENCE</small><strong>Statics</strong></div>
+            <span id="completedCount" class="counterChip">0 done</span>
+          </div>
+          <div id="courseOutline" class="courseOutline"></div>
+        </section>
+
+        <section class="notesPanel" id="notesPanel">
+          <button class="notesToggle" id="notesToggle" type="button">
+            <span class="notesToggleIndex">N</span>
+            <span class="notesToggleText"><strong>Field Notes</strong><small id="notesCount">0 notes</small></span>
+            <span id="notesChevron" class="notesChevron">⌄</span>
+          </button>
+          <div class="notesBody" id="notesBody">
+            <div class="notesTopbar">
+              <button class="railButton" id="addNoteBtn" type="button">+ NOTE</button>
+              <button class="railButton" id="expandNotesBtn" type="button">EXPAND</button>
+            </div>
+            <div id="noteTabs" class="noteTabs"></div>
+            <div id="noteEditorHost"></div>
+          </div>
+        </section>
+
+        <section class="railUtility">
+          <div class="utilityTitle"><span>SYS</span><strong>Workspace</strong></div>
+          <div class="utilityButtons">
+            <button class="railButton" id="syncBtn" type="button">SYNC NOW</button>
+            <button class="railButton dangerText" id="resetBtn" type="button">RESET PROGRESS</button>
+          </div>
+          <p id="saveFooterNote" class="saveFooterNote">Your work is saved locally on this device.</p>
+        </section>
+      </aside>
+
+      <main class="analysisDesk">
+        <section id="lessonBanner" class="analysisHeader">
+          <div class="analysisHeaderGrid" aria-hidden="true"></div>
+          <div class="analysisHeaderMeta">
+            <span class="metaCode">CURRENT WEEK</span>
+            <span class="metaDivider"></span>
+            <span id="bannerUnit" class="metaUnit">LECTURE 01</span>
+          </div>
+          <h1 id="bannerTitle">Introduction</h1>
+          <p id="bannerDescription"></p>
+          <div class="headerDiagram" aria-hidden="true">
+            <span class="axis axisX"></span><span class="axis axisY"></span>
+            <span class="vector v1"></span><span class="vector v2"></span>
+            <span class="originDot"></span><span class="momentArc"></span>
+            <b class="labelX">x</b><b class="labelY">y</b><b class="labelF">F</b><b class="labelM">R</b>
+          </div>
+        </section>
+
+        <nav class="modeSwitch" aria-label="Study sections">
+          <button class="studyTab active" data-tab="lesson" type="button"><span>01</span><b>ANALYZE</b><small>Lesson</small></button>
+          <button class="studyTab" data-tab="practice" type="button"><span>02</span><b>SOLVE</b><small>Practice</small></button>
+          <button class="studyTab" data-tab="mastery" type="button"><span>03</span><b>VERIFY</b><small>Mastery</small></button>
+          <button class="studyTab" data-tab="reference" type="button"><span>04</span><b>REFERENCE</b><small>Glossary · formulas · units</small></button>
+        </nav>
+
+        <section id="lessonView" class="view active">
+          <article class="drawingSheet lessonCard">
+            <div class="sheetCorner tl"></div><div class="sheetCorner tr"></div><div class="sheetCorner bl"></div><div class="sheetCorner br"></div>
+            <div class="sheetTitleBlock">
+              <div><span>STUDY SHEET</span><small>LECTURE PDF + MATCHING TEXTBOOK SECTIONS</small></div>
+              <div class="sheetRevision"><span>REV</span><b>A</b></div>
+            </div>
+            <div class="sheetBody">
+              <div id="lessonContentHost"></div>
+              <div id="lessonActions" class="sheetActions">
+                <button id="markCompleteBtn" class="actionPrimary" type="button">Mark lesson complete</button>
+                <button id="nextLessonBtn" class="actionLine" type="button">Next loaded section <span>→</span></button>
+              </div>
+            </div>
+          </article>
+
+          <article class="draftBoard whiteboardCard">
+            <div class="draftBoardHead">
+              <div><span class="draftCode">FBD-01</span><h2>Free-Body Workspace</h2><p>Session scratchpad for diagrams, equations, components, and force polygons.</p></div>
+              <button id="whiteboardFullscreenBtn" class="actionLine compact" type="button" data-wb-fullscreen>FULLSCREEN</button>
+            </div>
+            <div class="whiteboard" id="whiteboard">
+              <div class="whiteboardToolbar proWhiteboardToolbar">
+                <div class="toolGroup"><span>TOOL</span><button class="toolBtn active" data-wb-tool="pen" type="button">PEN</button><button class="toolBtn" data-wb-tool="eraser" type="button" title="Click to select · hold temporarily · E key on desktop">ERASE</button><button class="toolBtn" data-wb-tool="drag" type="button" title="Drag the canvas to pan around your work">DRAG</button></div>
+                <div class="toolGroup wbInkControls"><span>INK</span><button class="wbPreset inkBlack" type="button" data-wb-preset="#172033" title="Black ink · double tap for custom color"></button><button class="wbPreset inkBlue" type="button" data-wb-preset="#245f8f" title="Blue ink · double tap for custom color"></button><button class="wbPreset inkRed" type="button" data-wb-preset="#a94f49" title="Red ink · double tap for custom color"></button><button class="wbPreset inkGreen" type="button" data-wb-preset="#39745d" title="Green ink · double tap for custom color"></button><label class="colorWrap" title="Custom pen color"><input id="penColor" data-wb-color type="color" value="#172033" /></label><input id="penWidth" data-wb-width class="widthRange" type="range" min="1" max="12" value="3" aria-label="Pen width" /></div>
+                <div class="toolGroup"><span class="wbZoomReadout" data-wb-zoom>100%</span></div>
+                <div class="toolGroup grow"><span>HISTORY</span><button class="toolBtn" data-wb-undo type="button">UNDO</button><button class="toolBtn" data-wb-redo type="button">REDO</button><button class="toolBtn danger" data-wb-clear type="button">CLEAR</button></div>
+              </div>
+              <div class="canvasShell" data-wb-viewport><canvas id="boardCanvas" data-pro-canvas></canvas><div class="canvasStamp">STATICS / FBD</div></div>
+            </div>
+          </article>
+        </section>
+
+        <section id="practiceView" class="view">
+          <article class="drawingSheet problemSheet">
+            <div class="sheetCorner tl"></div><div class="sheetCorner tr"></div><div class="sheetCorner bl"></div><div class="sheetCorner br"></div>
+            <div class="sheetTitleBlock"><div><span>PROBLEM BAY</span><small>ONLY MATERIAL ALREADY PRESENT IN THE UPLOADED LESSONS</small></div><div class="sheetRevision"><span>SET</span><b>P</b></div></div>
+            <div class="sheetBody"><div id="practiceContentHost"></div></div>
+          </article>
+        </section>
+
+        <section id="masteryView" class="view">
+          <article class="drawingSheet problemSheet">
+            <div class="sheetCorner tl"></div><div class="sheetCorner tr"></div><div class="sheetCorner bl"></div><div class="sheetCorner br"></div>
+            <div class="sheetTitleBlock"><div><span>MASTERY</span><small>MIXED VERIFICATION SETS APPEAR WHEN ENOUGH SOURCE MATERIAL EXISTS</small></div><div class="sheetRevision"><span>SET</span><b>V</b></div></div>
+            <div class="sheetBody"><div id="masteryContentHost"><div class="intentionalBlank"><span>—</span></div></div></div>
+          </article>
+        </section>
+
+        <section id="referenceView" class="view">
+          <article class="referencePanel">
+            <div class="referenceHead">
+              <div><span>STATICS FIELD REFERENCE</span><h2>Current Glossary, Formulas & Units</h2><p>Built from the material currently loaded through Lectures 01–04, with matching textbook sections used only as support.</p></div>
+              <div class="referenceBadge">REF<br>04</div>
+            </div>
+            <div id="referenceContentHost"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="cloudModal" class="modal" aria-hidden="true">
+    <div class="modalCard">
+      <div class="modalTitleBar"><span>PROFILE / CLOUD SAVE</span><button id="closeCloudModal" class="modalClose" type="button">×</button></div>
+      <div class="modalContent">
+        <div class="modalCode">STATICS DATA LINK</div>
+        <h2>Cloud workspace</h2>
+        <p class="modalIntro">Statics uses its own revisioned username profile. It is separate from Engineering Mathematics, so the two courses never overwrite each other.</p>
+        <div id="cloudLoginSection" class="cloudLoginForm">
+          <label><span class="fieldLabel">USERNAME</span><input id="cloudUsernameInput" class="textInput" maxlength="32" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="e.g. eren" /></label>
+          <p class="hint">2–32 lowercase letters, numbers, or underscores. This username-only profile is intentionally simple and guessable.</p>
+          <button id="cloudSignInBtn" class="actionPrimary" type="button">Connect / create profile</button>
+        </div>
+        <div id="cloudSignedInCard" class="cloudSignedInCard">
+          <div class="signedInIdentity"><span>CONNECTED PROFILE</span><strong id="cloudSignedInName"></strong><small id="cloudSignedInMeta"></small></div>
+          <div class="modalActions">
+            <button id="modalSyncBtn" class="actionLine" type="button">Sync now</button>
+            <button id="switchUsernameBtn" class="actionLine" type="button">Switch username</button>
+            <button id="signOutBtn" class="actionLine" type="button">Sign out</button>
+          </div>
+        </div>
+        <div id="cloudStatus" class="cloudStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./prequiz-content.js?v=34"></script>
+  <script src="./quiz1-upgrade.js?v=34"></script>
+  <script src="./teaching-depth.js?v=35"></script>
+  <script src="./audit-fixes.js?v=35"></script>
+  <script src="./whiteboard-pro.js?v=35"></script>
+  <script src="./app.js?v=34"></script>
+</body>
+</html>
