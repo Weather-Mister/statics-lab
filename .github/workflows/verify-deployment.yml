@@ -37,6 +37,7 @@ jobs:
             echo "OK $remote_path"
           }
 
+          check_file "" "public/index.html"
           check_file "app.js" "public/app.js"
           check_file "audit-fixes.js" "public/audit-fixes.js"
           check_file "content.css" "public/content.css"
