@@ -42,7 +42,9 @@ jobs:
 
           check_file "" "public/index.html"
           check_file "app.js" "public/app.js"
-          check_file "audit-fixes.js" "public/audit-fixes.js"\n          check_file "calculator.css" "public/calculator.css"\n          check_file "calculator.js" "public/calculator.js"
+          check_file "audit-fixes.js" "public/audit-fixes.js"
+          check_file "calculator.css" "public/calculator.css"
+          check_file "calculator.js" "public/calculator.js"
           check_file "content.css" "public/content.css"
           check_file "favicon.svg" "public/favicon.svg"
           check_file "prequiz-content.js" "public/prequiz-content.js"
@@ -57,7 +59,9 @@ jobs:
           grep -q '<title>Statics Lab</title>' /tmp/live-index.html
           grep -q 'src="./app.js?v=34"' /tmp/live-index.html
           grep -q 'href="./styles.css?v=22"' /tmp/live-index.html
-          grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html\n          grep -q 'href="./calculator.css?v=1"' /tmp/live-index.html\n          grep -q 'src="./calculator.js?v=1"' /tmp/live-index.html
+          grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html
+          grep -q 'href="./calculator.css?v=1"' /tmp/live-index.html
+          grep -q 'src="./calculator.js?v=1"' /tmp/live-index.html
           echo "OK index.html and GitHub Pages path rewriting"
 
       - name: Verify Supabase profile backend and CORS
