@@ -29,6 +29,16 @@ jobs:
           grep -q "Math.abs(value) < 1e-12" public/calculator.js
           grep -q "Math.abs(cosine) < 1e-12" public/calculator.js
 
+      - name: Verify calculator drag support
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "STORAGE_POSITION" public/calculator.js
+          grep -q "pointerdown" public/calculator.js
+          grep -q "setPointerCapture" public/calculator.js
+          grep -q "setPanelPosition" public/calculator.js
+          grep -q "cursor:grab" public/calculator.css
+
       - name: Verify deployed frontend byte-for-byte
         shell: bash
         run: |
@@ -69,8 +79,8 @@ jobs:
           grep -q 'src="./app.js?v=34"' /tmp/live-index.html
           grep -q 'href="./styles.css?v=22"' /tmp/live-index.html
           grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html
-          grep -q 'href="./calculator.css?v=2"' /tmp/live-index.html
-          grep -q 'src="./calculator.js?v=2"' /tmp/live-index.html
+          grep -q 'href="./calculator.css?v=3"' /tmp/live-index.html
+          grep -q 'src="./calculator.js?v=3"' /tmp/live-index.html
           echo "OK index.html and GitHub Pages path rewriting"
 
       - name: Verify Supabase profile backend and CORS

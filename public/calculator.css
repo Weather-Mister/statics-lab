@@ -81,3 +81,14 @@
   .scientificCalc,.calculatorToggle,.calculatorMobileToggle,.calcKey{transition:none}
   .calcFlash,.calcErrorFlash{animation:none}
 }
+
+/* ===== Calculator draggable window ===== */
+.calcTopbar{cursor:grab;user-select:none;touch-action:none}
+.scientificCalc.dragging .calcTopbar{cursor:grabbing}
+.scientificCalc.dragging{transition:none!important;will-change:left,top}
+.calcTopActions,.calcTopActions *{cursor:default}
+.calcAngleOption,.calcCloseBtn{cursor:pointer}
+.scientificCalc.positioned{right:auto}
+@media(max-width:780px){
+  .scientificCalc.positioned{right:auto;left:auto;width:min(410px,calc(100vw - 16px))}
+}

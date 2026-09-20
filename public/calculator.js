@@ -6,6 +6,7 @@
 
   const STORAGE_HISTORY = 'staticsCalcHistoryV1';
   const STORAGE_ANGLE = 'staticsCalcAngleV1';
+  const STORAGE_POSITION = 'staticsCalcPositionV1';
   const MAX_HISTORY = 30;
   let ans = 0;
   let history = [];
@@ -49,7 +50,7 @@
     <div class="calcTopbar">
       <div class="calcIdentity">
         <span class="calcCode">SC-01</span>
-        <div><strong>Scientific Calculator</strong><small>ALT+C · ENTER = SOLVE · ↑↓ = HISTORY</small></div>
+        <div><strong>Scientific Calculator</strong><small>DRAG HERE TO MOVE · ALT+C · ENTER = SOLVE</small></div>
       </div>
       <div class="calcTopActions">
         <div class="calcAngleSwitch" role="group" aria-label="Angle unit">
@@ -125,6 +126,7 @@
   `;
   document.body.appendChild(panel);
 
+  const topbar = panel.querySelector('.calcTopbar');
   const input = panel.querySelector('#calcExpression');
   const result = panel.querySelector('#calcResult');
   const modeButtons = [...panel.querySelectorAll('[data-angle-mode]')];
@@ -136,6 +138,88 @@
     return panel.classList.contains('open');
   }
 
+  function clampPosition(left, top) {
+    const rect = panel.getBoundingClientRect();
+    const margin = 8;
+    const width = Math.min(rect.width || 410, window.innerWidth - margin * 2);
+    const height = Math.min(rect.height || 500, window.innerHeight - margin * 2);
+    return {
+      left: Math.max(margin, Math.min(left, window.innerWidth - width - margin)),
+      top: Math.max(margin, Math.min(top, window.innerHeight - height - margin))
+    };
+  }
+
+  function setPanelPosition(left, top, {save=true}={}) {
+    const next = clampPosition(left, top);
+    panel.style.left = next.left + 'px';
+    panel.style.top = next.top + 'px';
+    panel.style.right = 'auto';
+    panel.classList.add('positioned');
+    if (save) {
+      try {
+        localStorage.setItem(STORAGE_POSITION, JSON.stringify(next));
+      } catch (_) {}
+    }
+  }
+
+  function restorePanelPosition() {
+    let saved = null;
+    try {
+      saved = JSON.parse(localStorage.getItem(STORAGE_POSITION) || 'null');
+    } catch (_) {}
+    if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
+      setPanelPosition(saved.left, saved.top, {save:false});
+    }
+  }
+
+  function resetPanelPosition() {
+    panel.classList.remove('positioned');
+    panel.style.left = '';
+    panel.style.top = '';
+    panel.style.right = '';
+    try { localStorage.removeItem(STORAGE_POSITION); } catch (_) {}
+  }
+
+  let dragState = null;
+  topbar.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('button')) return;
+    const rect = panel.getBoundingClientRect();
+    dragState = {
+      pointerId: event.pointerId,
+      offsetX: event.clientX - rect.left,
+      offsetY: event.clientY - rect.top
+    };
+    panel.style.width = rect.width + 'px';
+    panel.classList.add('dragging');
+    topbar.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+
+  topbar.addEventListener('pointermove', event => {
+    if (!dragState || dragState.pointerId !== event.pointerId) return;
+    setPanelPosition(event.clientX - dragState.offsetX, event.clientY - dragState.offsetY);
+  });
+
+  function finishDrag(event) {
+    if (!dragState || dragState.pointerId !== event.pointerId) return;
+    dragState = null;
+    panel.classList.remove('dragging');
+    try { topbar.releasePointerCapture(event.pointerId); } catch (_) {}
+  }
+
+  topbar.addEventListener('pointerup', finishDrag);
+  topbar.addEventListener('pointercancel', finishDrag);
+  topbar.addEventListener('dblclick', event => {
+    if (event.target.closest('button')) return;
+    resetPanelPosition();
+  });
+
+  window.addEventListener('resize', () => {
+    if (!panel.classList.contains('positioned')) return;
+    const rect = panel.getBoundingClientRect();
+    setPanelPosition(rect.left, rect.top, {save:true});
+  });
+
   function setOpen(next) {
     panel.classList.toggle('open', next);
     panel.setAttribute('aria-hidden', next ? 'false' : 'true');
@@ -143,6 +227,7 @@
     mobileToggle.setAttribute('aria-expanded', next ? 'true' : 'false');
     if (next) {
       requestAnimationFrame(() => {
+        restorePanelPosition();
         input.focus({preventScroll: true});
         input.setSelectionRange(input.value.length, input.value.length);
       });
