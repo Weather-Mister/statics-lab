@@ -121,7 +121,7 @@ jobs:
             local tmp
             tmp="$(mktemp)"
             curl --fail --silent --show-error --location --retry 8 --retry-delay 2 --retry-all-errors \
-              "$BASE/$remote_path" -o "$tmp"
+              "$BASE/$remote_path?verify=$GITHUB_SHA" -o "$tmp"
             cmp --silent "$local_path" "$tmp" || {
               echo "::error::$remote_path differs from the repository copy"
               exit 1
@@ -149,7 +149,7 @@ jobs:
           check_file "vendor/mathjax-tex-svg.js" "public/vendor/mathjax-tex-svg.js"
 
           curl --fail --silent --show-error --location --retry 8 --retry-delay 2 --retry-all-errors \
-            "$BASE/" -o /tmp/live-index.html
+            "$BASE/?verify=$GITHUB_SHA" -o /tmp/live-index.html
           grep -q '<title>Statics Lab</title>' /tmp/live-index.html
           grep -q 'src="./app.js?v=34"' /tmp/live-index.html
           grep -q 'href="./styles.css?v=22"' /tmp/live-index.html
