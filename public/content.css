@@ -201,3 +201,21 @@ body.whiteboardFullscreenOpen{overflow:hidden!important;overscroll-behavior:none
   .questionDiagram .sdForce3D{max-height:300px}
   .sdForce3D .sdInsetFormula{font-size:8.5px}
 }
+
+
+/* ===== Spacious 3D split cards v2 ===== */
+.sdInsetSpacious rect{fill:#f1ebdf;stroke:#bdb3a4;stroke-width:1}
+.sdInsetSpacious .sdInsetSketch{opacity:1}
+.sdInsetSpacious .sdInsetRule{stroke:#cec4b5;stroke-width:1}
+.sdInsetSpacious .sdInsetFormula{font-size:9px;font-weight:800}
+.sdInsetSpacious .sdAngleText{font-size:9px}
+.sdInsetSpacious .sdForceLabel,
+.sdInsetSpacious .sdComponentHLabel,
+.sdInsetSpacious .sdComponentYLabel,
+.sdInsetSpacious .sdComponentXLabel,
+.sdInsetSpacious .sdComponentZLabel{font-size:9px}
+.questionDiagram .sdForce3D{max-height:390px}
+.fullscreenProblemDiagram .sdForce3D{width:min(100%,820px)}
+@media(max-width:760px){
+  .questionDiagram .sdForce3D{max-height:340px}
+}
