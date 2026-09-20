@@ -149,7 +149,7 @@
     restore(strokes){this.board().strokes=cloneStrokes(strokes);this.board().updatedAt=Date.now();this.save();this.paint();this.onInk()}
     doUndo(){if(!this.undo.length)return;this.redo.push(this.snapshot());this.restore(this.undo.pop())}
     doRedo(){if(!this.redo.length)return;this.undo.push(this.snapshot());this.restore(this.redo.pop())}
-    clear(){if(!this.board().strokes.length)return;if(!confirm('Clear this whiteboard? You can undo this.'))return;this.pushHistory();this.board().strokes=[];this.saveBoard();this.paint()}
+    clear(){if(!this.board().strokes.length)return;this.pushHistory();this.board().strokes=[];this.saveBoard();this.paint()}
     fitView(){this.view={scale:1,panX:0,panY:0};this.updateZoomUi();this.paint()}
     updateZoomUi(){const el=this.root.querySelector('[data-wb-zoom]');if(el)el.textContent=Math.round(this.view.scale*100)+'%'}
     toggleFullscreen(force){

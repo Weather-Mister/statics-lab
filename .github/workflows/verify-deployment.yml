@@ -59,6 +59,16 @@ jobs:
           grep -q "data-vx-moment" public/visual-explanations.js
           grep -q "vxSupports" public/visual-explanations.css
 
+      - name: Verify instant whiteboard clear
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -q "Clear this whiteboard" public/whiteboard-pro.js; then
+            echo "Whiteboard clear confirmation still present"
+            exit 1
+          fi
+          grep -q "clear(){if(!this.board().strokes.length)return;this.pushHistory()" public/whiteboard-pro.js
+
       - name: Verify fullscreen question diagrams
         shell: bash
         run: |
