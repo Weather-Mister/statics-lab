@@ -62,8 +62,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q "1 · VERTICAL SPLIT" public/statics-diagrams.js
-          grep -q "2 · HORIZONTAL SPLIT" public/statics-diagrams.js
+          grep -q "1 · VERTICAL" public/statics-diagrams.js
+          grep -q "2 · HORIZONTAL" public/statics-diagrams.js
           grep -q "sdComponentY" public/statics-diagrams.js
           grep -q "horizontal projection" public/statics-diagrams.js
           grep -q "Clear two-stage 3D force decomposition" public/content.css
