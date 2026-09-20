@@ -1,0 +1,55 @@
+/* ===== Subtle old-PC workstation polish ===== */
+:root{
+  --pc-bevel-hi:rgba(255,255,255,.48);
+  --pc-bevel-lo:rgba(91,78,60,.18);
+  --pc-scanline:rgba(38,49,45,.018);
+  --pc-focus:#4e7771;
+  --pc-screen-glow:rgba(47,119,116,.045);
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  background:repeating-linear-gradient(0deg,var(--pc-scanline) 0,var(--pc-scanline) 1px,transparent 1px,transparent 4px);
+  opacity:.58;
+}
+.commandBar,.instrumentRail,.analysisHeader,.drawingSheet,.draftBoard,.referencePanel,.modalCard,.scientificCalc,.vxCard,.exViz{
+  box-shadow:inset 1px 1px 0 var(--pc-bevel-hi),inset -1px -1px 0 var(--pc-bevel-lo),0 10px 28px rgba(77,65,47,.065);
+}
+.profileControl,.themeControl,.railButton,.studyTab,.actionPrimary,.actionLine,.toolBtn,.lessonSelect,.textInput,.noteTab,.calcKey,.calcCopy,.calcAngleOption,.calcCloseBtn,.calculatorToggle,.questionBoardToggle,.choiceBtn,.numericRow button,.referenceSearchBar input,.converterGrid select,.converterGrid input{
+  border-radius:0!important;
+}
+.profileControl,.themeControl,.railButton,.studyTab,.actionPrimary,.actionLine,.toolBtn,.noteTab,.calcKey,.calcCopy,.calcAngleOption,.calcCloseBtn,.calculatorToggle,.questionBoardToggle,.choiceBtn,.numericRow button{
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.50),inset -1px -1px 0 rgba(86,75,61,.14);
+}
+.profileControl:active,.themeControl:active,.railButton:active,.studyTab:active,.actionPrimary:active,.actionLine:active,.toolBtn:active,.noteTab:active,.calcKey:active,.calcCopy:active,.calcAngleOption:active,.calcCloseBtn:active,.calculatorToggle:active,.questionBoardToggle:active,.choiceBtn:active,.numericRow button:active{
+  box-shadow:inset 1px 1px 0 rgba(86,75,61,.16),inset -1px -1px 0 rgba(255,255,255,.42);
+}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:1px dotted var(--pc-focus)!important;
+  outline-offset:2px;
+}
+.wordmarkTop,.railHeader small,.outlineHeader small,.utilityTitle span,.metaCode,.sheetTitleBlock span,.referenceHead>div:first-child>span,.profileControlTop,.calculatorToggleTop,.vxHead>span,.exVizHead>span{
+  text-shadow:0 1px 0 rgba(255,255,255,.62);
+  letter-spacing:.105em;
+}
+.progressTrack,.textInput,.lessonSelect,.referenceSearchBar input,.converterGrid label,.converterResult,.noteEditor,.canvasShell,.questionBoardCanvasShell,.calcExpression,.vxPlot,.exBeam{
+  box-shadow:inset 1px 1px 0 rgba(87,75,59,.12),inset -1px -1px 0 rgba(255,255,255,.48);
+}
+.calcDisplay,.verificationEmpty,.converterResult{
+  background-image:linear-gradient(var(--pc-screen-glow),var(--pc-screen-glow));
+}
+.commandBar,.calcTopbar,.modalTitleBar,.vxHead,.exVizHead{
+  background-image:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0)),linear-gradient(90deg,rgba(47,119,116,.025),transparent 55%);
+}
+@media(prefers-reduced-motion:no-preference){
+  .progressFill,.cloudDot.synced,.calcResult[data-state="ok"]{animation:pcStatusPulse 5.2s steps(2,end) infinite}
+}
+@keyframes pcStatusPulse{
+  0%,96%,100%{filter:none}
+  97%{filter:brightness(1.035)}
+}
+@media(max-width:700px){body::after{opacity:.34}}
+.whiteboardCard.fullscreen,.questionBoard:fullscreen{isolation:isolate}
