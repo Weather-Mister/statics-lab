@@ -17,6 +17,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v6
 
+      - name: Verify calculator JavaScript syntax
+        run: node --check public/calculator.js
+
       - name: Verify deployed frontend byte-for-byte
         shell: bash
         run: |
