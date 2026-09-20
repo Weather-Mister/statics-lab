@@ -77,8 +77,120 @@
   }
 
   function support() {
-    return wrap('Support reactions come from blocked motion', 'Ask what the support prevents before drawing reaction arrows.',
-      '<div class="vxSupports"><div><span>ROLLER</span><svg viewBox="0 0 200 120"><line x1="25" y1="50" x2="175" y2="50" stroke="#5e6862" stroke-width="7"/><circle cx="80" cy="70" r="10" fill="none" stroke="#2f7774" stroke-width="4"/><circle cx="120" cy="70" r="10" fill="none" stroke="#2f7774" stroke-width="4"/><line x1="35" y1="87" x2="165" y2="87" stroke="#8c897f" stroke-width="3"/><path d="M100 48 L100 15" stroke="#a25f2f" stroke-width="5"/></svg><b>1 reaction</b><small>Normal to the surface.</small></div><div><span>PIN</span><svg viewBox="0 0 200 120"><line x1="25" y1="50" x2="175" y2="50" stroke="#5e6862" stroke-width="7"/><circle cx="100" cy="50" r="13" fill="#eee8dc" stroke="#2f7774" stroke-width="4"/><path d="M100 45 L100 15 M95 50 L55 50" stroke="#a25f2f" stroke-width="5"/></svg><b>2 reactions</b><small>Blocks x and y; allows rotation.</small></div><div><span>FIXED</span><svg viewBox="0 0 200 120"><rect x="28" y="20" width="22" height="72" fill="#d8d0c3" stroke="#5e6862" stroke-width="3"/><line x1="50" y1="55" x2="165" y2="55" stroke="#5e6862" stroke-width="7"/><path d="M85 50 L85 15 M80 55 L55 55" stroke="#a25f2f" stroke-width="5"/><path d="M128 82 A28 28 0 1 0 128 35" fill="none" stroke="#2f7774" stroke-width="4"/></svg><b>3 reactions</b><small>Blocks x, y, and rotation.</small></div></div>'
+    return wrap('Support reactions come from blocked motion', 'Do not memorize arrows. Start by asking which motions the support makes impossible.',
+      `<div class="vxSupportLesson">
+        <section class="vxSupportIdea">
+          <div class="vxSupportIdeaText">
+            <span class="vxEyebrow">THE CORE IDEA</span>
+            <strong>A rigid body in 2D has three possible motions.</strong>
+            <p>It can translate in <b>x</b>, translate in <b>y</b>, and rotate. A support creates a reaction only in the motion directions that it prevents.</p>
+          </div>
+          <div class="vxDof">
+            <div><b>↔</b><span>x translation</span><small>Can it slide left/right?</small></div>
+            <div><b>↕</b><span>y translation</span><small>Can it move up/down?</small></div>
+            <div><b>↻</b><span>rotation</span><small>Can it turn?</small></div>
+          </div>
+        </section>
+
+        <div class="vxSupportRule">
+          <b>ONE BLOCKED MOTION → ONE REACTION UNKNOWN</b>
+          <span>The reaction acts in whatever direction is needed to enforce that constraint. If your assumed arrow is wrong, the solved value simply comes out negative.</span>
+        </div>
+
+        <div class="vxSupports">
+          <div>
+            <span>ROLLER / SMOOTH CONTACT</span>
+            <svg viewBox="0 0 200 120"><line x1="25" y1="50" x2="175" y2="50" stroke="#5e6862" stroke-width="7"/><circle cx="80" cy="70" r="10" fill="none" stroke="#2f7774" stroke-width="4"/><circle cx="120" cy="70" r="10" fill="none" stroke="#2f7774" stroke-width="4"/><line x1="35" y1="87" x2="165" y2="87" stroke="#8c897f" stroke-width="3"/><path d="M100 48 L100 15" stroke="#a25f2f" stroke-width="5"/></svg>
+            <b>1 reaction</b>
+            <small>Blocks motion <em>through</em> the surface. It can still slide along the surface and rotate.</small>
+            <code>N ⟂ surface</code>
+          </div>
+          <div>
+            <span>PIN / HINGE</span>
+            <svg viewBox="0 0 200 120"><line x1="25" y1="50" x2="175" y2="50" stroke="#5e6862" stroke-width="7"/><circle cx="100" cy="50" r="13" fill="#eee8dc" stroke="#2f7774" stroke-width="4"/><path d="M100 45 L100 15 M95 50 L55 50" stroke="#a25f2f" stroke-width="5"/></svg>
+            <b>2 reactions</b>
+            <small>Stops translation in both planar directions, but the body can still rotate about the pin.</small>
+            <code>Aₓ , Aᵧ</code>
+          </div>
+          <div>
+            <span>FIXED SUPPORT</span>
+            <svg viewBox="0 0 200 120"><rect x="28" y="20" width="22" height="72" fill="#d8d0c3" stroke="#5e6862" stroke-width="3"/><line x1="50" y1="55" x2="165" y2="55" stroke="#5e6862" stroke-width="7"/><path d="M85 50 L85 15 M80 55 L55 55" stroke="#a25f2f" stroke-width="5"/><path d="M128 82 A28 28 0 1 0 128 35" fill="none" stroke="#2f7774" stroke-width="4"/></svg>
+            <b>3 reactions</b>
+            <small>Stops x translation, y translation, and rotation.</small>
+            <code>Aₓ , Aᵧ , M_A</code>
+          </div>
+        </div>
+
+        <section class="vxSupportDetails">
+          <div>
+            <span class="vxEyebrow">WHY THE ARROWS LOOK LIKE THIS</span>
+            <h4>Think in constraints, not support names</h4>
+            <p>A reaction is the force or couple the surroundings exert on the body so that the forbidden motion does not occur. The support picture tells you what is forbidden; your free-body diagram replaces the support picture with those unknown reactions.</p>
+            <div class="vxSupportMatrix">
+              <div class="head">Connection</div><div class="head">What it can do</div><div class="head">What appears on the FBD</div>
+              <div><b>Roller / smooth surface</b></div><div>slide tangentially + rotate</div><div>one normal force</div>
+              <div><b>Pin / hinge</b></div><div>rotate only</div><div>two force components</div>
+              <div><b>Fixed</b></div><div>no planar motion</div><div>two force components + one couple moment</div>
+              <div><b>Cable</b></div><div>can only pull along itself</div><div>one tension force along the cable</div>
+              <div><b>Short link</b></div><div>force transmitted along its axis</div><div>one force along the link; tension or compression</div>
+            </div>
+          </div>
+
+          <div>
+            <span class="vxEyebrow">CABLES AND LINKS</span>
+            <h4>Direction can be known even when magnitude is not</h4>
+            <div class="vxMiniCases">
+              <div><b>Cable</b><p>The line of action is known: it lies along the cable. A cable cannot push, so the force is tension and pulls away from the body.</p><code>T along cable</code></div>
+              <div><b>Short link</b><p>If the link is a two-force member, the end forces must be collinear with the link. The unknown may turn out to be tension or compression.</p><code>F along link</code></div>
+              <div><b>Smooth contact</b><p>No friction means the contact cannot exert a tangential force. Only the normal reaction remains.</p><code>N ⟂ surface</code></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="vxSupportWalk">
+          <span class="vxEyebrow">HOW TO DRAW SUPPORT REACTIONS ON AN FBD</span>
+          <h4>Use the same four questions every time</h4>
+          <div class="vxSteps">
+            <div><b>1</b><span><strong>Isolate the body.</strong> Remove the wall, floor, pin, cable, or other surrounding object from the drawing.</span></div>
+            <div><b>2</b><span><strong>Ask what motion that connection prevented.</strong> Horizontal? Vertical? Rotation? Along or normal to a surface?</span></div>
+            <div><b>3</b><span><strong>Replace each blocked motion with an unknown reaction.</strong> Do not add reactions for motions the support allows.</span></div>
+            <div><b>4</b><span><strong>Then write equilibrium.</strong> For a planar rigid body: <code>ΣFₓ = 0</code>, <code>ΣFᵧ = 0</code>, <code>ΣM = 0</code>.</span></div>
+          </div>
+        </section>
+
+        <section class="vxSupportExample">
+          <div>
+            <span class="vxEyebrow">CLASSIC BEAM EXAMPLE</span>
+            <h4>Pin at A + roller at B</h4>
+            <p>The pin at A blocks x and y translation, so it contributes <b>Aₓ</b> and <b>Aᵧ</b>. The roller at B sits on a horizontal surface, so it contributes only the vertical reaction <b>Bᵧ</b>. The beam can rotate at both connections, so neither one contributes a reaction moment.</p>
+            <div class="vxEquationStrip"><code>unknowns: Aₓ, Aᵧ, Bᵧ</code><span>↔</span><code>equations: ΣFₓ=0, ΣFᵧ=0, ΣM=0</code></div>
+            <p class="vxSupportPunch"><strong>This is why a pin + roller is so common:</strong> in 2D it gives exactly three external reaction unknowns, matching the three independent rigid-body equilibrium equations.</p>
+          </div>
+          <svg class="vxBeamSvg" viewBox="0 0 520 235">
+            <defs><marker id="vxsupA" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#a25f2f"/></marker><marker id="vxsupB" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2f7774"/></marker></defs>
+            <line x1="90" y1="105" x2="430" y2="105" stroke="#5e6862" stroke-width="10"/>
+            <circle cx="115" cy="105" r="12" fill="#eee8dc" stroke="#2f7774" stroke-width="4"/>
+            <polygon points="92,145 138,145 115,117" fill="#d8d0c3" stroke="#6f756f" stroke-width="2"/>
+            <circle cx="405" cy="130" r="11" fill="none" stroke="#2f7774" stroke-width="4"/>
+            <line x1="375" y1="148" x2="435" y2="148" stroke="#8c897f" stroke-width="3"/>
+            <line x1="115" y1="100" x2="115" y2="40" stroke="#a25f2f" stroke-width="5" marker-end="url(#vxsupA)"/>
+            <line x1="110" y1="105" x2="52" y2="105" stroke="#a25f2f" stroke-width="5" marker-end="url(#vxsupA)"/>
+            <line x1="405" y1="125" x2="405" y2="55" stroke="#2f7774" stroke-width="5" marker-end="url(#vxsupB)"/>
+            <text x="124" y="48">Aᵧ</text><text x="48" y="94">Aₓ</text><text x="415" y="62">Bᵧ</text><text x="105" y="172">pin A</text><text x="386" y="172">roller B</text>
+          </svg>
+        </section>
+
+        <section class="vxSupportMistakes">
+          <span class="vxEyebrow">COMMON MISTAKES</span>
+          <div>
+            <p><b>Adding a horizontal force at a frictionless roller.</b><br>The roller allows tangential sliding, so there is no tangential reaction.</p>
+            <p><b>Adding a moment at a pin.</b><br>A pin allows rotation, so it cannot supply a reaction couple in the ideal 2D model.</p>
+            <p><b>Forcing the guessed arrow direction to be correct.</b><br>Choose a convenient direction. A negative answer means the real reaction acts opposite to your arrow.</p>
+            <p><b>Drawing a cable force in x and y immediately.</b><br>The cable has one unknown magnitude and a known line of action. Resolve it into components only when writing equations.</p>
+          </div>
+        </section>
+      </div>`,
+      'Quick check: cover the reaction arrows in any support diagram and ask, “Which x/y/rotation motions are impossible?” The reactions should follow from your answer.'
     );
   }
 
