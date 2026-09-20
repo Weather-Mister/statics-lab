@@ -43,7 +43,7 @@
       this.questionText=opts.questionText||'';
       this.ctx=this.canvas?.getContext('2d');
       this.undo=[];this.redo=[];
-      this.selectedTool='pen';this.keyboardEraser=false;this.holdEraser=false;this.suppressEraserClick=false;
+      this.selectedTool='pen';this.keyboardEraser=false;this.keyboardPan=false;this.holdEraser=false;this.suppressEraserClick=false;
       this.pointers=new Map();this.drawingPointer=null;this.currentStroke=null;this.lastPenAt=0;
       this.dragPointer=null;this.dragStart=null;
       this.view={scale:1,panX:0,panY:0};this.gesture=null;
@@ -96,11 +96,12 @@
       this.eraserPreview.style.width=size+'px';this.eraserPreview.style.height=size+'px';
       this.eraserPreview.style.left=p.x+'px';this.eraserPreview.style.top=p.y+'px';this.eraserPreview.style.display='block';
     }
-    effectiveTool(){return (this.keyboardEraser||this.holdEraser)?'eraser':this.selectedTool}
+    effectiveTool(){return this.keyboardPan?'drag':((this.keyboardEraser||this.holdEraser)?'eraser':this.selectedTool)}
     updateToolUi(){
       const tool=this.effectiveTool();
       this.root.querySelectorAll('[data-wb-tool]').forEach(b=>b.classList.toggle('active',b.dataset.wbTool===tool));
       this.root.classList.toggle('temporaryEraser',this.keyboardEraser||this.holdEraser);
+      this.root.classList.toggle('temporaryPan',this.keyboardPan);
       this.root.classList.toggle('wbDragMode',tool==='drag');
       if(tool!=='eraser')this.hideEraserPreview();
     }
@@ -224,7 +225,7 @@
       }
       if(e.pointerType==='mouse'&&e.button!==0)return;
       e.preventDefault();try{this.canvas.setPointerCapture?.(e.pointerId)}catch(_){}
-      if(this.effectiveTool()==='drag'){
+      if(this.effectiveTool()==='drag'||(e.pointerType==='mouse'&&e.ctrlKey)){
         const p=this.localPoint(e);this.dragPointer=e.pointerId;this.dragStart={x:p.x,y:p.y,panX:this.view.panX,panY:this.view.panY};this.root.classList.add('wbDragging');return;
       }
       this.pushHistory();
@@ -292,12 +293,14 @@
       this.ctx.setTransform(dpr,0,0,dpr,0,0);this.ctx.clearRect(0,0,r.width,r.height);this.board().strokes.forEach(s=>this.drawStroke(s,r));
     }
     setKeyboardEraser(on){this.keyboardEraser=on;this.updateToolUi()}
+    setKeyboardPan(on){this.keyboardPan=on;this.updateToolUi()}
   }
 
   window.addEventListener('keydown',e=>{
     if(isTypingTarget(e.target))return;
     const key=String(e.key||'').toLowerCase();
     const command=e.ctrlKey||e.metaKey;
+    if(key==='control'&&activeBoard){activeBoard.setKeyboardPan(true);return}
     if(command&&key==='z'&&activeBoard){e.preventDefault();e.shiftKey?activeBoard.doRedo():activeBoard.doUndo();return}
     if(command&&key==='y'&&activeBoard){e.preventDefault();activeBoard.doRedo();return}
     if(key==='f'&&!command&&!e.altKey&&!e.shiftKey&&activeBoard){e.preventDefault();activeBoard.toggleFullscreen();return}
@@ -308,8 +311,16 @@
     }
     if(key==='e'&&!e.repeat&&activeBoard){activeBoard.setKeyboardEraser(true);e.preventDefault()}
   });
-  window.addEventListener('keyup',e=>{if((e.key==='e'||e.key==='E')&&activeBoard)activeBoard.setKeyboardEraser(false)});
-  window.addEventListener('blur',()=>{if(activeBoard)activeBoard.setKeyboardEraser(false)});
+  window.addEventListener('keyup',e=>{
+    if(!activeBoard)return;
+    if(e.key==='Control')activeBoard.setKeyboardPan(false);
+    if(e.key==='e'||e.key==='E')activeBoard.setKeyboardEraser(false);
+  });
+  window.addEventListener('blur',()=>{
+    if(!activeBoard)return;
+    activeBoard.setKeyboardPan(false);
+    activeBoard.setKeyboardEraser(false);
+  });
 
   window.StaticsWhiteboardPro={
     enhance(opts){

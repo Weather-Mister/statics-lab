@@ -70,6 +70,16 @@ jobs:
           grep -q "data-vx-moment" public/visual-explanations.js
           grep -q "vxSupports" public/visual-explanations.css
 
+      - name: Verify Ctrl-drag whiteboard panning
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check public/whiteboard-pro.js
+          grep -q "keyboardPan=false" public/whiteboard-pro.js
+          grep -q "setKeyboardPan(on)" public/whiteboard-pro.js
+          grep -q "key==='control'" public/whiteboard-pro.js
+          grep -q "e.pointerType==='mouse'&&e.ctrlKey" public/whiteboard-pro.js
+
       - name: Verify instant whiteboard clear
         shell: bash
         run: |
