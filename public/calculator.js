@@ -52,7 +52,10 @@
         <div><strong>Scientific Calculator</strong><small>ALT+C · ENTER = SOLVE · ↑↓ = HISTORY</small></div>
       </div>
       <div class="calcTopActions">
-        <button class="calcModeBtn" id="calcAngleMode" type="button" title="Toggle degrees / radians">DEG</button>
+        <div class="calcAngleSwitch" role="group" aria-label="Angle unit">
+          <button class="calcAngleOption" type="button" data-angle-mode="DEG" aria-pressed="true">DEG</button>
+          <button class="calcAngleOption" type="button" data-angle-mode="RAD" aria-pressed="false">RAD</button>
+        </div>
         <button class="calcCloseBtn" id="calcClose" type="button" aria-label="Close calculator">×</button>
       </div>
     </div>
@@ -124,7 +127,7 @@
 
   const input = panel.querySelector('#calcExpression');
   const result = panel.querySelector('#calcResult');
-  const modeBtn = panel.querySelector('#calcAngleMode');
+  const modeButtons = [...panel.querySelectorAll('[data-angle-mode]')];
   const modeReadout = panel.querySelector('#calcModeReadout');
   const historyReadout = panel.querySelector('#calcHistoryReadout');
   const copyBtn = panel.querySelector('#calcCopy');
@@ -152,7 +155,11 @@
 
   function setAngleMode(mode) {
     angleMode = mode === 'RAD' ? 'RAD' : 'DEG';
-    modeBtn.textContent = angleMode;
+    modeButtons.forEach(button => {
+      const active = button.dataset.angleMode === angleMode;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
     modeReadout.textContent = angleMode + ' MODE';
     localStorage.setItem(STORAGE_ANGLE, angleMode);
     schedulePreview();
@@ -230,10 +237,21 @@
 
     const toAngle = x => angleMode === 'DEG' ? x * Math.PI / 180 : x;
     const fromAngle = x => angleMode === 'DEG' ? x * 180 / Math.PI : x;
+    const snapTrig = value => {
+      if (Math.abs(value) < 1e-12) return 0;
+      if (Math.abs(value - 1) < 1e-12) return 1;
+      if (Math.abs(value + 1) < 1e-12) return -1;
+      return value;
+    };
     const functions = {
-      sin: x => Math.sin(toAngle(x)),
-      cos: x => Math.cos(toAngle(x)),
-      tan: x => Math.tan(toAngle(x)),
+      sin: x => snapTrig(Math.sin(toAngle(x))),
+      cos: x => snapTrig(Math.cos(toAngle(x))),
+      tan: x => {
+        const a = toAngle(x);
+        const cosine = Math.cos(a);
+        if (Math.abs(cosine) < 1e-12) throw new Error('Undefined');
+        return snapTrig(Math.sin(a) / cosine);
+      },
       asin: x => fromAngle(Math.asin(x)),
       acos: x => fromAngle(Math.acos(x)),
       atan: x => fromAngle(Math.atan(x)),
@@ -553,7 +571,7 @@
   toggle.addEventListener('click', toggleOpen);
   mobileToggle.addEventListener('click', toggleOpen);
   panel.querySelector('#calcClose').addEventListener('click', () => setOpen(false));
-  modeBtn.addEventListener('click', () => setAngleMode(angleMode === 'DEG' ? 'RAD' : 'DEG'));
+  modeButtons.forEach(button => button.addEventListener('click', () => setAngleMode(button.dataset.angleMode)));
   copyBtn.addEventListener('click', copyResult);
 
   setAngleMode(angleMode);

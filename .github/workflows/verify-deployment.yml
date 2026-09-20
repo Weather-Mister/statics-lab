@@ -20,6 +20,15 @@ jobs:
       - name: Verify calculator JavaScript syntax
         run: node --check public/calculator.js
 
+      - name: Verify calculator mode and trig guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'data-angle-mode="DEG"' public/calculator.js
+          grep -q 'data-angle-mode="RAD"' public/calculator.js
+          grep -q "Math.abs(value) < 1e-12" public/calculator.js
+          grep -q "Math.abs(cosine) < 1e-12" public/calculator.js
+
       - name: Verify deployed frontend byte-for-byte
         shell: bash
         run: |
@@ -60,8 +69,8 @@ jobs:
           grep -q 'src="./app.js?v=34"' /tmp/live-index.html
           grep -q 'href="./styles.css?v=22"' /tmp/live-index.html
           grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html
-          grep -q 'href="./calculator.css?v=1"' /tmp/live-index.html
-          grep -q 'src="./calculator.js?v=1"' /tmp/live-index.html
+          grep -q 'href="./calculator.css?v=2"' /tmp/live-index.html
+          grep -q 'src="./calculator.js?v=2"' /tmp/live-index.html
           echo "OK index.html and GitHub Pages path rewriting"
 
       - name: Verify Supabase profile backend and CORS

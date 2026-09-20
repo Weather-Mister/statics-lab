@@ -20,10 +20,13 @@
 .calcIdentity strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 .calcIdentity small{margin-top:3px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7px;letter-spacing:.055em;color:#77766f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .calcTopActions{display:flex;gap:5px}
-.calcModeBtn,.calcCloseBtn{height:34px;border:1px solid #b8afa0;background:#f8f3e9;color:#49544f;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;font-weight:900}
-.calcModeBtn{min-width:42px;color:#2f7774}
-.calcCloseBtn{width:34px;font-size:18px;font-weight:400}
-.calcModeBtn:hover,.calcCloseBtn:hover{background:#fffaf0;border-color:#7d948c}
+.calcAngleSwitch{height:34px;display:grid;grid-template-columns:1fr 1fr;border:1px solid #b8afa0;background:#ddd5c8;overflow:hidden}
+.calcAngleOption{min-width:46px;height:32px;border:0;border-right:1px solid #b8afa0;background:#eee8dd;color:#78786f;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:8px;font-weight:900;letter-spacing:.06em;transition:background .08s ease,color .08s ease,box-shadow .08s ease}
+.calcAngleOption:last-child{border-right:0}
+.calcAngleOption:hover{background:#f8f3e9;color:#3f5550}
+.calcAngleOption.active{background:#2f7774;color:#fffaf0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.calcCloseBtn{width:34px;height:34px;border:1px solid #b8afa0;background:#f8f3e9;color:#49544f;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;font-weight:400}
+.calcCloseBtn:hover{background:#fffaf0;border-color:#7d948c}
 
 .calcDisplay{padding:14px;background:#17212a;color:#edf3ef;border-bottom:1px solid #b8afa0}
 .calcDisplayMeta{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7px;letter-spacing:.1em;color:#8ea29d}
