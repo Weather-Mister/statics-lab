@@ -39,6 +39,16 @@ jobs:
           grep -q "setPanelPosition" public/calculator.js
           grep -q "cursor:grab" public/calculator.css
 
+      - name: Verify visual explanation layer
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check public/visual-explanations.js
+          grep -q "VISUAL EXPLANATION" public/visual-explanations.js
+          grep -q "data-vx-components" public/visual-explanations.js
+          grep -q "data-vx-moment" public/visual-explanations.js
+          grep -q "vxSupports" public/visual-explanations.css
+
       - name: Verify deployed frontend byte-for-byte
         shell: bash
         run: |
@@ -64,6 +74,8 @@ jobs:
           check_file "audit-fixes.js" "public/audit-fixes.js"
           check_file "calculator.css" "public/calculator.css"
           check_file "calculator.js" "public/calculator.js"
+          check_file "visual-explanations.css" "public/visual-explanations.css"
+          check_file "visual-explanations.js" "public/visual-explanations.js"
           check_file "content.css" "public/content.css"
           check_file "favicon.svg" "public/favicon.svg"
           check_file "prequiz-content.js" "public/prequiz-content.js"
@@ -81,6 +93,8 @@ jobs:
           grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html
           grep -q 'href="./calculator.css?v=3"' /tmp/live-index.html
           grep -q 'src="./calculator.js?v=3"' /tmp/live-index.html
+          grep -q 'href="./visual-explanations.css?v=1"' /tmp/live-index.html
+          grep -q 'src="./visual-explanations.js?v=1"' /tmp/live-index.html
           echo "OK index.html and GitHub Pages path rewriting"
 
       - name: Verify Supabase profile backend and CORS
