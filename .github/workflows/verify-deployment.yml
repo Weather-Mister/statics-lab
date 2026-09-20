@@ -49,6 +49,17 @@ jobs:
           grep -q "setPanelPosition" public/calculator.js
           grep -q "cursor:grab" public/calculator.css
 
+      - name: Verify reusable statics diagram engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check public/statics-diagrams.js
+          node --check public/quiz1-upgrade.js
+          grep -q "window.StaticsDiagrams" public/statics-diagrams.js
+          grep -q "StaticsDiagrams.force3D" public/quiz1-upgrade.js
+          grep -q "Reusable Statics vector-diagram engine" public/content.css
+          grep -q 'src="./statics-diagrams.js?v=1"' public/index.html
+
       - name: Verify visual explanation layer
         shell: bash
         run: |
@@ -131,7 +142,7 @@ jobs:
           check_file "content.css" "public/content.css"
           check_file "favicon.svg" "public/favicon.svg"
           check_file "prequiz-content.js" "public/prequiz-content.js"
-          check_file "quiz1-upgrade.js" "public/quiz1-upgrade.js"
+          check_file "quiz1-upgrade.js" "public/quiz1-upgrade.js"\n          check_file "statics-diagrams.js" "public/statics-diagrams.js"
           check_file "styles.css" "public/styles.css"
           check_file "teaching-depth.js" "public/teaching-depth.js"
           check_file "whiteboard-pro.js" "public/whiteboard-pro.js"

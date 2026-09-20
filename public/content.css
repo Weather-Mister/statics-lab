@@ -144,3 +144,33 @@ body.whiteboardFullscreenOpen{overflow:hidden!important;overscroll-behavior:none
   .questionBoard.wbFullscreen .fullscreenProblemDiagram{max-height:none}
   .questionBoard.wbFullscreen .fullscreenProblemDiagram svg{max-height:none;width:min(100%,380px)}
 }
+
+/* ===== Reusable Statics vector-diagram engine ===== */
+.sdDiagram{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
+.sdDiagram *{vector-effect:non-scaling-stroke}
+.sdDiagram text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;dominant-baseline:alphabetic}
+.sdAxis{stroke:#74817b;stroke-width:1.6;fill:none}
+.sdAxisHead{fill:#74817b}.sdForceHead{fill:#a65353}.sdCableHead{fill:#2f7774}
+.sdAxisLabel{fill:#56625d;font-size:11px;font-weight:900}
+.sdPlane{fill:rgba(47,119,116,.035);stroke:#c9c1b4;stroke-width:1}
+.sdForce{stroke:#a65353;stroke-width:3.2;fill:none}
+.sdForceLabel{fill:#8d4747;font-size:11px;font-weight:900}
+.sdCable,.sdAxisTarget{stroke:#2f7774;stroke-width:2.8;fill:none}
+.sdCableLabel{fill:#2f6d67;font-size:11px;font-weight:900}
+.sdProjection,.sdConstruction{stroke:#8d897f;stroke-width:1.2;stroke-dasharray:5 4;fill:none}
+.sdProjection.sdThin{stroke-width:1}
+.sdPosition{stroke:#7b6f60;stroke-width:2.2;fill:none}
+.sdMember{stroke:#46534e;stroke-width:6;stroke-linecap:square}
+.sdGround{stroke:#6d6c66;stroke-width:4}.sdRingBody{fill:rgba(47,119,116,.035);stroke:#4f5d57;stroke-width:3}
+.sdPoint{fill:#2f7774;stroke:#fffaf0;stroke-width:1.5}.sdJoint{fill:#2f7774;stroke:#fffaf0;stroke-width:2}.sdMassPoint{fill:#a65353}
+.sdPointLabel{fill:#3c4944;font-size:11px;font-weight:900}
+.sdAngleText{fill:#8a5b35;font-size:10px;font-weight:900}
+.sdDimText{fill:#77766f;font-size:9px}.sdDimension,.sdTick{stroke:#9b9488;stroke-width:1}
+.sdSupport{stroke:#4d5954;stroke-width:4}.sdHatch{stroke:#77766f;stroke-width:1.2}.sdSupportFill{fill:#eee7da;stroke:#4f5b56;stroke-width:2}.sdRoller{fill:#fffaf0;stroke:#4f5b56;stroke-width:1.5}.sdSupportLabel{fill:#5f6661;font-size:9px;font-weight:900}
+.sdMoment{stroke:#a65353;stroke-width:2.8;fill:none}.sdMomentLabel{fill:#8d4747;font-size:10px;font-weight:900}
+.sdAngleArc{stroke:#b47a47;stroke-width:2;fill:none}
+.sdLegend rect{fill:#eee7da;stroke:#bcb3a5;stroke-width:1}.sdLegendTitle{fill:#2f7774;font-size:8px;font-weight:900;letter-spacing:.08em}.sdLegendText{fill:#3e4a45;font-size:9px}.sdLegendNote{fill:#76766f;font-size:8px}
+.questionDiagram:has(.sdDiagram),.fullscreenProblemDiagram:has(.sdDiagram){padding:8px;background:#fbf7ee}
+.questionDiagram .sdDiagram{max-height:260px}
+.fullscreenProblemDiagram .sdDiagram{width:min(100%,560px);max-height:none}
+@media(max-width:600px){.sdLegend{display:none}.sdDiagram text{font-size:10px}.sdDimText{font-size:8px}}

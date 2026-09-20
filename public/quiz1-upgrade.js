@@ -2,28 +2,17 @@
   const P = window.PREQUIZ;
   if (!P) return;
 
-  const beamSvg = (L, loads, opts={}) => {
-    const x0=48, x1=392, y=82, span=x1-x0;
-    const sx=x=>x0+span*(x/L);
-    const loadHtml=loads.map(l=>{const x=sx(l.x);const down=l.dir!=='up';const y1=down?24:138,y2=down?68:96;const tip=down?72:92;const wing=down?62:102;return `<line class="qd-force" x1="${x}" y1="${y1}" x2="${x}" y2="${y2}"/><polygon points="${x-5},${wing} ${x+5},${wing} ${x},${tip}" fill="#a65353"/><text x="${x}" y="${down?18:153}" text-anchor="middle">${l.label}</text><line class="qd-dim" x1="${x}" y1="88" x2="${x}" y2="124"/><text x="${x}" y="136" text-anchor="middle">x=${l.x} m</text>`}).join('');
-    const supportA=opts.A==='fixed'?`<line class="qd-line" x1="${x0}" y1="48" x2="${x0}" y2="118"/><line class="qd-line" x1="${x0-7}" y1="50" x2="${x0}" y2="56"/><line class="qd-line" x1="${x0-7}" y1="62" x2="${x0}" y2="68"/><line class="qd-line" x1="${x0-7}" y1="74" x2="${x0}" y2="80"/><text x="${x0-12}" y="42" text-anchor="middle">fixed A</text>`:`<polygon points="${x0-13},108 ${x0+13},108 ${x0},86" fill="none" stroke="#43534e" stroke-width="2"/><text x="${x0}" y="124" text-anchor="middle">pin A</text>`;
-    const supportB=opts.B==='roller'?`<polygon points="${x1-13},108 ${x1+13},108 ${x1},86" fill="none" stroke="#43534e" stroke-width="2"/><circle cx="${x1-7}" cy="114" r="4" fill="none" stroke="#43534e"/><circle cx="${x1+7}" cy="114" r="4" fill="none" stroke="#43534e"/><text x="${x1}" y="132" text-anchor="middle">roller B</text>`:'';
-    const couple=opts.couple?`<path d="M ${x0+38} 42 A 18 18 0 1 1 ${x0+38} 70" class="qd-force"/><polygon points="${x0+32},66 ${x0+43},68 ${x0+37},76" fill="#a65353"/><text x="${x0+63}" y="47">${opts.couple}</text>`:'';
-    return `<svg viewBox="0 0 440 165" role="img" aria-label="Beam statics diagram"><line class="qd-line" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/><text class="qd-label" x="${x0}" y="72">A</text><text class="qd-label" x="${x1}" y="72">B</text>${supportA}${supportB}${loadHtml}${couple}<line class="qd-dim" x1="${x0}" y1="148" x2="${x1}" y2="148"/><text x="220" y="161" text-anchor="middle">L = ${L} m</text></svg>`;
-  };
+  const beamSvg=(L,loads,opts={})=>window.StaticsDiagrams.beam(L,loads,opts);
 
-  const cableBeamSvg=(L,loadX,load,angle)=>{
-    const x0=48,x1=360,y=92,span=x1-x0,xL=x0+span*(loadX/L);
-    return `<svg viewBox="0 0 440 180" role="img" aria-label="Pinned beam with cable"><line class="qd-line" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/><polygon points="${x0-13},118 ${x0+13},118 ${x0},96" fill="none" stroke="#43534e" stroke-width="2"/><text x="${x0}" y="136" text-anchor="middle">pin A</text><line class="qd-cable" x1="${x1}" y1="${y}" x2="418" y2="28"/><circle cx="418" cy="28" r="4" fill="#2f7774"/><text x="385" y="24">cable</text><text x="365" y="78">${angle}°</text><line class="qd-force" x1="${xL}" y1="28" x2="${xL}" y2="77"/><polygon points="${xL-5},68 ${xL+5},68 ${xL},82" fill="#a65353"/><text x="${xL}" y="20" text-anchor="middle">${load} kN</text><line class="qd-dim" x1="${xL}" y1="98" x2="${xL}" y2="138"/><text x="${xL}" y="151" text-anchor="middle">x=${loadX} m</text><line class="qd-dim" x1="${x0}" y1="164" x2="${x1}" y2="164"/><text x="204" y="177" text-anchor="middle">L=${L} m</text></svg>`;
-  };
+  const cableBeamSvg=(L,loadX,load,angle)=>window.StaticsDiagrams.cableBeam(L,loadX,load,angle);
 
-  const particleSvg=(W,left,right)=>`<svg viewBox="0 0 420 180" role="img" aria-label="Particle supported by two cables"><circle cx="210" cy="94" r="7" fill="#2f7774"/><line class="qd-cable" x1="210" y1="94" x2="92" y2="28"/><line class="qd-cable" x1="210" y1="94" x2="330" y2="30"/><line class="qd-force" x1="210" y1="100" x2="210" y2="154"/><polygon points="205,143 215,143 210,158" fill="#a65353"/><text x="210" y="174" text-anchor="middle">${W} N</text><text x="93" y="24" text-anchor="middle">left cable</text><text x="330" y="24" text-anchor="middle">right cable</text><text x="142" y="74">${left}</text><text x="272" y="73">${right}</text><line class="qd-dim" x1="210" y1="94" x2="210" y2="36"/></svg>`;
+  const particleSvg=(W,left,right)=>window.StaticsDiagrams.particle(W,left,right);
 
-  const force3dSvg=(F,theta,phi)=>`<svg viewBox="0 0 420 190" role="img" aria-label="Three dimensional force schematic"><line class="qd-line" x1="92" y1="145" x2="330" y2="145"/><line class="qd-line" x1="92" y1="145" x2="92" y2="28"/><line class="qd-line" x1="92" y1="145" x2="38" y2="176"/><text x="337" y="150">+x</text><text x="82" y="20">+y</text><text x="18" y="184">+z</text><line class="qd-dim" x1="92" y1="145" x2="277" y2="145"/><line class="qd-dim" x1="277" y1="145" x2="277" y2="72"/><line class="qd-force" x1="92" y1="145" x2="277" y2="72"/><polygon points="266,72 275,66 280,78" fill="#a65353"/><text x="288" y="67">F=${F} N</text><text x="102" y="72">θy=${theta}°</text><text x="205" y="162">φ=${phi}° in x-z plane</text></svg>`;
+  const force3dSvg=(F,theta,phi)=>window.StaticsDiagrams.force3D(F,theta,phi);
 
-  const axisSvg=(axisText,pointText,forceText)=>`<svg viewBox="0 0 420 190" role="img" aria-label="Moment about an arbitrary axis schematic"><line class="qd-line" x1="80" y1="150" x2="330" y2="150"/><line class="qd-line" x1="80" y1="150" x2="80" y2="34"/><line class="qd-line" x1="80" y1="150" x2="38" y2="178"/><line class="qd-cable" x1="80" y1="150" x2="240" y2="46"/><text x="248" y="46">axis ${axisText}</text><circle cx="210" cy="128" r="5" fill="#2f7774"/><text x="218" y="126">A ${pointText}</text><line class="qd-force" x1="210" y1="128" x2="210" y2="56"/><polygon points="205,67 215,67 210,52" fill="#a65353"/><text x="220" y="64">F ${forceText}</text><text x="70" y="165">O</text></svg>`;
+  const axisSvg=(axisText,pointText,forceText)=>window.StaticsDiagrams.axisMoment(axisText,pointText,forceText);
 
-  const ringSvg=(alpha)=>`<svg viewBox="0 0 420 190" role="img" aria-label="Eccentric ring on rough incline"><line class="qd-line" x1="48" y1="146" x2="365" y2="96"/><circle cx="202" cy="100" r="55" fill="none" stroke="#43534e" stroke-width="3"/><circle cx="225" cy="116" r="7" fill="#a65353"/><text x="236" y="120">m₀</text><text x="189" y="103">O</text><line class="qd-force" x1="202" y1="100" x2="202" y2="157"/><polygon points="197,146 207,146 202,161" fill="#a65353"/><text x="210" y="174">mg</text><line class="qd-cable" x1="188" y1="145" x2="168" y2="105"/><text x="145" y="104">N</text><line class="qd-cable" x1="188" y1="145" x2="245" y2="136"/><text x="252" y="140">F</text><text x="66" y="161">incline α=${alpha}°</text></svg>`;
+  const ringSvg=(alpha)=>window.StaticsDiagrams.ring(alpha);
 
   const lecture03Angles = String.raw`
     <section class="lessonSection auditUpgrade">
