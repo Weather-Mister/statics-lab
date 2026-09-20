@@ -33,13 +33,15 @@
 .calcExpression{display:block;width:100%;height:44px;padding:8px 10px;border:1px solid #3d4e54;background:#10191f;color:#eef5f1;outline:none;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:16px;line-height:1.2;caret-color:#63c0b5}
 .calcExpression:focus{border-color:#64a69d;box-shadow:0 0 0 2px rgba(99,192,181,.12)}
 .calcExpression::selection{background:#2f7774;color:#fff}
-.calcResultRow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;margin-top:9px;min-width:0}
+.calcResultRow{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:7px;margin-top:9px;min-width:0}
 .calcResultRow>span{color:#6fc6bb;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .calcResult{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:25px;font-weight:800;letter-spacing:-.03em;color:#f6fbf8}
 .calcResult[data-state="error"]{font-size:11px;color:#f09a91;letter-spacing:0}
 .calcResult[data-state="idle"]{color:#82928f}
-.calcCopy{height:28px;padding:0 7px;border:1px solid #40555a;background:#1e2b32;color:#91aaa5;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7px;font-weight:900;letter-spacing:.08em}
-.calcCopy:hover{border-color:#68a79e;color:#d9ece8}
+.calcCopy,.calcApprox{height:28px;padding:0 7px;border:1px solid #40555a;background:#1e2b32;color:#91aaa5;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7px;font-weight:900;letter-spacing:.08em}
+.calcApprox{color:#9cd2ca;border-color:#4d706b}
+.calcCopy:hover,.calcApprox:hover{border-color:#68a79e;color:#d9ece8}
+.calcApprox[hidden]{display:none}
 .calcKeyboardHint{margin-top:8px;color:#738783;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:7px;line-height:1.35}
 .calcFlash{animation:calcResultPulse .18s ease}
 .calcErrorFlash{animation:calcErrorPulse .18s ease}
@@ -91,4 +93,10 @@
 .scientificCalc.positioned{right:auto}
 @media(max-width:780px){
   .scientificCalc.positioned{right:auto;left:auto;width:min(410px,calc(100vw - 16px))}
+}
+
+@media(max-width:390px){
+  .calcResultRow{grid-template-columns:auto minmax(0,1fr) auto}
+  .calcCopy{display:none}
+  .calcApprox{padding:0 6px}
 }

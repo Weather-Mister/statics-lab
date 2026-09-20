@@ -13,6 +13,9 @@
   let historyCursor = 0;
   let angleMode = localStorage.getItem(STORAGE_ANGLE) === 'RAD' ? 'RAD' : 'DEG';
   let previewFrame = 0;
+  let lastResultValue = 0;
+  let lastExactResult = null;
+  let resultView = 'exact';
 
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_HISTORY) || '[]');
@@ -72,6 +75,7 @@
       <div class="calcResultRow">
         <span>=</span>
         <output id="calcResult" class="calcResult" aria-live="polite">0</output>
+        <button id="calcApprox" class="calcApprox" type="button" title="Show decimal approximation" hidden>DECIMAL</button>
         <button id="calcCopy" class="calcCopy" type="button" title="Copy result">COPY</button>
       </div>
       <div id="calcKeyboardHint" class="calcKeyboardHint">← → move cursor · Home/End jump · Ctrl/Cmd+C/V/X/A work normally</div>
@@ -121,7 +125,7 @@
     </div>
     <div class="calcFooter">
       <span>Supports implicit multiply: 2π, 3(4+1), 2sin(30)</span>
-      <span>Factorial: type ! · Percent: type %</span>
+      <span>Exact roots/fractions shown first · DECIMAL toggles approximation</span>
     </div>
   `;
   document.body.appendChild(panel);
@@ -133,6 +137,7 @@
   const modeReadout = panel.querySelector('#calcModeReadout');
   const historyReadout = panel.querySelector('#calcHistoryReadout');
   const copyBtn = panel.querySelector('#calcCopy');
+  const approxBtn = panel.querySelector('#calcApprox');
 
   function isOpen() {
     return panel.classList.contains('open');
@@ -457,6 +462,106 @@
     return Object.is(value, -0) ? 0 : value;
   }
 
+  function gcd(a, b) {
+    a = Math.abs(Math.trunc(a));
+    b = Math.abs(Math.trunc(b));
+    while (b) [a, b] = [b, a % b];
+    return a || 1;
+  }
+
+  function near(a, b) {
+    return Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
+  }
+
+  function formatFraction(n, d) {
+    if (d === 1) return String(n);
+    return n + '/' + d;
+  }
+
+  function formatPiMultiple(n, d) {
+    const sign = n < 0 ? '-' : '';
+    n = Math.abs(n);
+    const g = gcd(n, d);
+    n /= g;
+    d /= g;
+    const coeff = n === 1 ? '' : String(n);
+    if (d === 1) return sign + coeff + 'π';
+    return sign + (coeff || '') + 'π/' + d;
+  }
+
+  function formatRadicalMultiple(n, d, radicand) {
+    const sign = n < 0 ? '-' : '';
+    n = Math.abs(n);
+    const g = gcd(n, d);
+    n /= g;
+    d /= g;
+    const coeff = n === 1 ? '' : String(n);
+    const radical = coeff + '√' + radicand;
+    return sign + (d === 1 ? radical : radical + '/' + d);
+  }
+
+  function exactResultForValue(value) {
+    if (!Number.isFinite(value)) return null;
+    if (near(value, Math.round(value))) return null;
+
+    // Prefer simple rational answers when they are genuinely exact-looking.
+    for (let d = 2; d <= 48; d++) {
+      const n = Math.round(value * d);
+      if (Math.abs(n) > 100000) continue;
+      if (near(value, n / d)) {
+        const g = gcd(n, d);
+        return formatFraction(n / g, d / g);
+      }
+    }
+
+    // Common exact radian answers such as π/6, 2π/3, -π/2.
+    for (let d = 1; d <= 24; d++) {
+      const n = Math.round(value * d / Math.PI);
+      if (!n || Math.abs(n) > 48) continue;
+      if (near(value, n * Math.PI / d)) return formatPiMultiple(n, d);
+    }
+
+    // Radical forms such as √2, √3/2, 2√3, 3√2/2.
+    const squareFree = [];
+    for (let r = 2; r <= 50; r++) {
+      let sf = true;
+      for (let k = 2; k * k <= r; k++) {
+        if (r % (k * k) === 0) { sf = false; break; }
+      }
+      if (sf) squareFree.push(r);
+    }
+    for (const r of squareFree) {
+      const root = Math.sqrt(r);
+      for (let d = 1; d <= 24; d++) {
+        const n = Math.round(value * d / root);
+        if (!n || Math.abs(n) > 96) continue;
+        if (near(value, n * root / d)) return formatRadicalMultiple(n, d, r);
+      }
+    }
+
+    return null;
+  }
+
+  function updateResultDisplay() {
+    const numeric = formatResult(lastResultValue);
+    const hasExact = !!lastExactResult && lastExactResult !== numeric;
+    approxBtn.hidden = !hasExact;
+    if (!hasExact) {
+      result.textContent = numeric;
+      resultView = 'exact';
+      return;
+    }
+    if (resultView === 'decimal') {
+      result.textContent = numeric;
+      approxBtn.textContent = 'EXACT';
+      approxBtn.title = 'Show exact value';
+    } else {
+      result.textContent = lastExactResult;
+      approxBtn.textContent = 'DECIMAL';
+      approxBtn.title = 'Show decimal approximation';
+    }
+  }
+
   function formatResult(value) {
     if (!Number.isFinite(value)) return 'ERROR';
     if (value === 0) return '0';
@@ -466,12 +571,17 @@
   }
 
   function showResult(value, explicit = false) {
-    result.textContent = formatResult(value);
+    lastResultValue = value;
+    lastExactResult = exactResultForValue(value);
+    resultView = 'exact';
+    updateResultDisplay();
     result.dataset.state = 'ok';
     if (explicit) flash(result);
   }
 
   function showError(message) {
+    lastExactResult = null;
+    approxBtn.hidden = true;
     result.textContent = message || 'ERROR';
     result.dataset.state = 'error';
     flash(result, 'calcErrorFlash');
@@ -482,6 +592,10 @@
     previewFrame = requestAnimationFrame(() => {
       const expression = input.value.trim();
       if (!expression) {
+        lastResultValue = 0;
+        lastExactResult = null;
+        resultView = 'exact';
+        approxBtn.hidden = true;
         result.textContent = '0';
         result.dataset.state = 'ok';
         return;
@@ -505,7 +619,7 @@
     try {
       const value = evaluateExpression(expression);
       ans = value;
-      const formatted = formatResult(value);
+      const formatted = exactResultForValue(value) || formatResult(value);
       const last = history[history.length - 1];
       if (!last || last.expression !== expression || last.result !== formatted || last.mode !== angleMode) {
         history.push({expression, result: formatted, value, mode: angleMode});
@@ -657,6 +771,12 @@
   mobileToggle.addEventListener('click', toggleOpen);
   panel.querySelector('#calcClose').addEventListener('click', () => setOpen(false));
   modeButtons.forEach(button => button.addEventListener('click', () => setAngleMode(button.dataset.angleMode)));
+  approxBtn.addEventListener('click', () => {
+    if (!lastExactResult) return;
+    resultView = resultView === 'exact' ? 'decimal' : 'exact';
+    updateResultDisplay();
+    flash(result);
+  });
   copyBtn.addEventListener('click', copyResult);
 
   setAngleMode(angleMode);
