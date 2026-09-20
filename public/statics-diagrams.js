@@ -32,20 +32,24 @@
     const th=Number(theta)*Math.PI/180, ph=Number(phi)*Math.PI/180;
     const h=Math.sin(th), dx=h*Math.cos(ph), dy=Math.cos(th), dz=h*Math.sin(ph);
 
-    const O={x:118,y:255};
-    const ex={x:218,y:0}, ey={x:0,y:-172}, ez={x:-76,y:45};
+    // Large, uncluttered 3D picture on the left.
+    const O={x:145,y:246};
+    const ex={x:242,y:0}, ey={x:0,y:-182}, ez={x:-88,y:52};
     const project=(x,y,z)=>({x:O.x+ex.x*x+ey.x*y+ez.x*z,y:O.y+ex.y*x+ey.y*y+ez.y*z});
     const X=project(1.02,0,0), Y=project(0,1.02,0), Z=project(0,0,1.02);
     const H=project(dx,0,dz), P=project(dx,dy,dz), Xh=project(dx,0,0);
 
-    const vScale=78, fy=vScale*Math.cos(th), fh=vScale*Math.sin(th);
-    const vO={x:54,y:112}, vTop={x:54,y:112-fy}, vEnd={x:54+fh,y:112-fy};
+    // Clean right-triangle geometry for the two actual decompositions.
+    const vs=72, vFy=vs*Math.cos(th), vFh=vs*Math.sin(th);
+    const vO={x:34,y:87}, vTop={x:34,y:87-vFy}, vEnd={x:34+vFh,y:87-vFy};
 
-    const pScale=78, fx=pScale*Math.cos(ph), fz=pScale*Math.sin(ph);
-    const pO={x:54,y:110}, pX={x:54+fx,y:110}, pEnd={x:54+fx,y:110-fz};
+    const ps=72, pFx=ps*Math.cos(ph), pFz=ps*Math.sin(ph);
+    const pO={x:34,y:87}, pX={x:34+pFx,y:87}, pEnd={x:34+pFx,y:87-pFz};
 
-    return svgStart('3D force decomposed into vertical, horizontal, x, and z components','0 0 720 390','sdForce3D')+
+    return svgStart('3D force with a two-step component decomposition','0 0 760 340','sdForce3D sdForce3DClean')+
       defs(id)+
+
+      // Main 3D sketch.
       '<polygon class="sdPlane" points="'+O.x+','+O.y+' '+X.x+','+X.y+' '+(X.x+ez.x)+','+(X.y+ez.y)+' '+Z.x+','+Z.y+'"/>'+
       '<line class="sdAxis" x1="'+O.x+'" y1="'+O.y+'" x2="'+X.x+'" y2="'+X.y+'" marker-end="url(#'+id+'Axis)"/>'+
       '<line class="sdAxis" x1="'+O.x+'" y1="'+O.y+'" x2="'+Y.x+'" y2="'+Y.y+'" marker-end="url(#'+id+'Axis)"/>'+
@@ -61,50 +65,53 @@
       '<line class="sdForce" x1="'+O.x+'" y1="'+O.y+'" x2="'+P.x+'" y2="'+P.y+'" marker-end="url(#'+id+'Force)"/>'+
       '<circle class="sdOrigin" cx="'+O.x+'" cy="'+O.y+'" r="4"/>'+
       '<circle class="sdPoint" cx="'+H.x+'" cy="'+H.y+'" r="4"/>'+
-      label((O.x+P.x)/2-8,(O.y+P.y)/2-14,'F = '+F+' N','sdForceLabel')+
-      label((O.x+H.x)/2,(O.y+H.y)/2+18,'Fh','sdComponentHLabel','middle')+
+      label((O.x+P.x)/2-2,(O.y+P.y)/2-16,'F = '+F+' N','sdForceLabel')+
+      label((O.x+H.x)/2,(O.y+H.y)/2+19,'Fh','sdComponentHLabel','middle')+
       label(H.x+12,(H.y+P.y)/2,'Fy','sdComponentYLabel')+
-      label(O.x+8,O.y+18,'O','sdPointLabel')+
-      label(H.x+9,H.y+15,'H','sdPointLabel')+
-      label(56,342,'H = horizontal projection of F onto the x-z plane','sdDiagramCaption')+
-      label(56,357,'Use the two clean 2D triangles at right for the exact angle relationships.','sdDiagramCaption')+
+      label(O.x+9,O.y+18,'O','sdPointLabel')+
+      label(H.x+10,H.y+16,'H','sdPointLabel')+
+      label(H.x+12,H.y+30,'horizontal projection','sdDiagramCaption')+
 
-      '<g class="sdInset sdInsetSpacious" transform="translate(374 18)">'+
-        '<rect x="0" y="0" width="328" height="168"/>'+
-        label(16,24,'1 · VERTICAL SPLIT','sdInsetTitle')+
-        label(16,44,'angle measured from +y','sdInsetNote')+
-        '<g class="sdInsetSketch" transform="translate(10 6)">'+
+      // One compact teaching panel instead of two giant cards.
+      '<g class="sdDecompPanel" transform="translate(478 17)">'+
+        '<rect class="sdDecompPanelBg" x="0" y="0" width="264" height="304"/>'+
+        label(16,23,'DECOMPOSE IN 2 STEPS','sdDecompTitle')+
+        '<line class="sdDecompRule" x1="16" y1="36" x2="248" y2="36"/>'+
+
+        // Step 1.
+        label(16,57,'1 · VERTICAL','sdStepHeading')+
+        label(16,72,'θy is measured from +y','sdStepNote')+
+        '<g class="sdStepSketch" transform="translate(10 61)">'+
           '<line class="sdComponentY" x1="'+vO.x+'" y1="'+vO.y+'" x2="'+vTop.x+'" y2="'+vTop.y+'"/>'+
           '<line class="sdComponentH" x1="'+vTop.x+'" y1="'+vTop.y+'" x2="'+vEnd.x+'" y2="'+vEnd.y+'"/>'+
           '<line class="sdForce" x1="'+vO.x+'" y1="'+vO.y+'" x2="'+vEnd.x+'" y2="'+vEnd.y+'"/>'+
-          '<path class="sdAngleArc" d="M '+vO.x+' '+(vO.y-22)+' A 22 22 0 0 1 '+(vO.x+22*Math.sin(th))+' '+(vO.y-22*Math.cos(th))+'"/>'+
-          label(vO.x+10,vO.y-27,'θy = '+theta+'°','sdAngleText')+
-          label(vTop.x-10,(vO.y+vTop.y)/2+2,'Fy','sdComponentYLabel','end')+
-          label((vTop.x+vEnd.x)/2,vTop.y-9,'Fh','sdComponentHLabel','middle')+
-          label((vO.x+vEnd.x)/2+8,(vO.y+vEnd.y)/2-8,'F','sdForceLabel')+
+          '<path class="sdAngleArc" d="M '+vO.x+' '+(vO.y-20)+' A 20 20 0 0 1 '+(vO.x+20*Math.sin(th))+' '+(vO.y-20*Math.cos(th))+'"/>'+
+          label(vO.x+8,vO.y-25,'θy','sdAngleText')+
+          label(vTop.x-8,(vO.y+vTop.y)/2+2,'Fy','sdComponentYLabel','end')+
+          label((vTop.x+vEnd.x)/2,vTop.y-7,'Fh','sdComponentHLabel','middle')+
         '</g>'+
-        '<line class="sdInsetRule" x1="16" y1="126" x2="312" y2="126"/>'+
-        label(18,148,'Fy = F cos θy','sdInsetFormula')+
-        label(177,148,'Fh = F sin θy','sdInsetFormula')+
-      '</g>'+
+        '<line class="sdStepDivider" x1="128" y1="82" x2="128" y2="147"/>'+
+        label(145,105,'Fy = F cos θy','sdStepFormula')+
+        label(145,128,'Fh = F sin θy','sdStepFormula')+
 
-      '<g class="sdInset sdInsetSpacious" transform="translate(374 204)">'+
-        '<rect x="0" y="0" width="328" height="168"/>'+
-        label(16,24,'2 · HORIZONTAL SPLIT','sdInsetTitle')+
-        label(16,44,'plan view of the x-z plane','sdInsetNote')+
-        '<g class="sdInsetSketch" transform="translate(10 7)">'+
+        '<line class="sdDecompRule" x1="16" y1="161" x2="248" y2="161"/>'+
+
+        // Step 2.
+        label(16,184,'2 · HORIZONTAL','sdStepHeading')+
+        label(16,199,'plan view of the x-z plane','sdStepNote')+
+        '<g class="sdStepSketch" transform="translate(10 187)">'+
           '<line class="sdComponentX" x1="'+pO.x+'" y1="'+pO.y+'" x2="'+pX.x+'" y2="'+pX.y+'"/>'+
           '<line class="sdComponentZ" x1="'+pX.x+'" y1="'+pX.y+'" x2="'+pEnd.x+'" y2="'+pEnd.y+'"/>'+
           '<line class="sdComponentH" x1="'+pO.x+'" y1="'+pO.y+'" x2="'+pEnd.x+'" y2="'+pEnd.y+'"/>'+
-          '<path class="sdAngleArc" d="M '+(pO.x+22)+' '+pO.y+' A 22 22 0 0 0 '+(pO.x+22*Math.cos(ph))+' '+(pO.y-22*Math.sin(ph))+'"/>'+
-          label(pO.x+29,pO.y-8,'φ = '+phi+'°','sdAngleText')+
-          label((pO.x+pX.x)/2,pO.y+20,'Fx','sdComponentXLabel','middle')+
-          label(pX.x+10,(pX.y+pEnd.y)/2+2,'Fz','sdComponentZLabel')+
-          label((pO.x+pEnd.x)/2-2,(pO.y+pEnd.y)/2-10,'Fh','sdComponentHLabel','middle')+
+          '<path class="sdAngleArc" d="M '+(pO.x+20)+' '+pO.y+' A 20 20 0 0 0 '+(pO.x+20*Math.cos(ph))+' '+(pO.y-20*Math.sin(ph))+'"/>'+
+          label(pO.x+25,pO.y-7,'φ','sdAngleText')+
+          label((pO.x+pX.x)/2,pO.y+17,'Fx','sdComponentXLabel','middle')+
+          label(pX.x+8,(pX.y+pEnd.y)/2+2,'Fz','sdComponentZLabel')+
+          label((pO.x+pEnd.x)/2-2,(pO.y+pEnd.y)/2-9,'Fh','sdComponentHLabel','middle')+
         '</g>'+
-        '<line class="sdInsetRule" x1="16" y1="126" x2="312" y2="126"/>'+
-        label(18,148,'Fx = Fh cos φ','sdInsetFormula')+
-        label(177,148,'Fz = Fh sin φ','sdInsetFormula')+
+        '<line class="sdStepDivider" x1="128" y1="208" x2="128" y2="273"/>'+
+        label(145,231,'Fx = Fh cos φ','sdStepFormula')+
+        label(145,254,'Fz = Fh sin φ','sdStepFormula')+
       '</g>'+
     '</svg>';
   }

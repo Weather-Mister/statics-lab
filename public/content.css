@@ -219,3 +219,29 @@ body.whiteboardFullscreenOpen{overflow:hidden!important;overscroll-behavior:none
 @media(max-width:760px){
   .questionDiagram .sdForce3D{max-height:340px}
 }
+
+
+/* ===== Clean 3D decomposition panel v3 ===== */
+.sdForce3DClean .sdDecompPanelBg{fill:#f1ebdf;stroke:#bdb3a4;stroke-width:1}
+.sdForce3DClean .sdDecompTitle{fill:#2f5f5b;font-size:8.5px;font-weight:900;letter-spacing:.09em}
+.sdForce3DClean .sdDecompRule{stroke:#cec4b5;stroke-width:1}
+.sdForce3DClean .sdStepHeading{fill:#3e4944;font-size:8px;font-weight:900;letter-spacing:.08em}
+.sdForce3DClean .sdStepNote{fill:#77766f;font-size:7.5px}
+.sdForce3DClean .sdStepDivider{stroke:#d1c7b8;stroke-width:1}
+.sdForce3DClean .sdStepFormula{fill:#36433e;font-size:9px;font-weight:800}
+.sdForce3DClean .sdStepSketch .sdForce,
+.sdForce3DClean .sdStepSketch .sdComponentH,
+.sdForce3DClean .sdStepSketch .sdComponentY,
+.sdForce3DClean .sdStepSketch .sdComponentX,
+.sdForce3DClean .sdStepSketch .sdComponentZ{stroke-width:2.3}
+.sdForce3DClean .sdStepSketch .sdAngleText,
+.sdForce3DClean .sdStepSketch .sdComponentHLabel,
+.sdForce3DClean .sdStepSketch .sdComponentYLabel,
+.sdForce3DClean .sdStepSketch .sdComponentXLabel,
+.sdForce3DClean .sdStepSketch .sdComponentZLabel{font-size:8.5px}
+.sdForce3DClean .sdDiagramCaption{font-size:7.5px}
+.questionDiagram .sdForce3DClean{max-height:345px}
+.fullscreenProblemDiagram .sdForce3DClean{width:min(100%,800px)}
+@media(max-width:760px){
+  .questionDiagram .sdForce3DClean{max-height:315px}
+}
