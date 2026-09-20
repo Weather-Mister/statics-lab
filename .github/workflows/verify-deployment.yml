@@ -59,6 +59,15 @@ jobs:
           grep -q "data-vx-moment" public/visual-explanations.js
           grep -q "vxSupports" public/visual-explanations.css
 
+      - name: Verify fullscreen question diagrams
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "Fullscreen question diagram repair" public/content.css
+          grep -q "fullscreenProblemDiagram .qd-force" public/content.css
+          grep -q "fullscreenProblemDiagram .qd-line" public/content.css
+          grep -q "grid-template-areas" public/content.css
+
       - name: Verify worked-example visuals
         shell: bash
         run: |

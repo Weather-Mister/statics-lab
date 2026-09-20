@@ -80,3 +80,67 @@ body.whiteboardFullscreenOpen{overflow:hidden!important;overscroll-behavior:none
 .questionBoard.wbFullscreen .fullscreenWorkedSolution .workedFbdCheck{margin:0 18px 16px}
 @media(max-width:780px){.fullscreenProblemOptions{grid-template-columns:1fr}.questionBoard.wbFullscreen .fullscreenProblemContext{padding:11px 12px}.fullscreenProblemContext h3{font-size:12px}.questionBoard.wbFullscreen .questionBoardCanvasShell{height:52vh!important;min-height:300px!important}.questionBoard.wbFullscreen .fullscreenWorkedSolution .workedAnswer,.questionBoard.wbFullscreen .fullscreenWorkedSolution .workedSteps{padding-left:12px;padding-right:12px}.questionBoard.wbFullscreen .fullscreenWorkedSolution .workedFbdCheck{margin-left:12px;margin-right:12px}}
 @media(max-width:470px){.fullscreenProblemDiagram{max-height:120px}.fullscreenProblemDiagram svg{max-height:105px}.questionBoard.wbFullscreen .questionBoardCanvasShell{height:50vh!important;min-height:260px!important}.workedAnswer{grid-template-columns:1fr;gap:4px}}
+
+/* ===== Fullscreen question diagram repair =====
+   q.diagram SVG strokes used to be scoped only to .questionDiagram, so the
+   cloned fullscreen diagram kept text/arrow polygons but lost its lines.
+   Keep the same visual language in both normal and fullscreen views. */
+.fullscreenProblemDiagram .qd-line{stroke:#43534e;stroke-width:2;fill:none}
+.fullscreenProblemDiagram .qd-force{stroke:#a65353;stroke-width:2.5;fill:none}
+.fullscreenProblemDiagram .qd-cable{stroke:#2f7774;stroke-width:2.5;fill:none}
+.fullscreenProblemDiagram .qd-dim{stroke:#857c6e;stroke-width:1;fill:none;stroke-dasharray:4 3}
+.fullscreenProblemDiagram text{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:#414a46}
+.fullscreenProblemDiagram .qd-label{font-weight:900;fill:#2f5f5b}
+
+/* Do not stretch a 420×190 lecture sketch across a widescreen display.
+   Keep its intrinsic proportions and let the question text use the spare room. */
+.questionBoard.wbFullscreen .fullscreenProblemDiagram{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  max-height:none;
+  overflow:hidden;
+}
+.questionBoard.wbFullscreen .fullscreenProblemDiagram svg{
+  width:min(100%,520px);
+  height:auto;
+  max-height:none;
+  margin:0 auto;
+}
+
+/* On desktop, put the compact diagram beside the prompt instead of creating a
+   huge, mostly-empty strip above the whiteboard. */
+@media(min-width:901px){
+  .questionBoard.wbFullscreen .fullscreenProblemContext:has(.fullscreenProblemDiagram){
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(330px,520px);
+    grid-template-areas:
+      "label diagram"
+      "title diagram"
+      "instructions diagram"
+      "choices diagram";
+    column-gap:18px;
+    row-gap:0;
+    align-items:center;
+  }
+  .questionBoard.wbFullscreen .fullscreenProblemContext:has(.fullscreenProblemDiagram) .fullscreenProblemLabel{grid-area:label;align-self:end}
+  .questionBoard.wbFullscreen .fullscreenProblemContext:has(.fullscreenProblemDiagram)>h3{grid-area:title;align-self:start}
+  .questionBoard.wbFullscreen .fullscreenProblemContext:has(.fullscreenProblemDiagram)>.fullscreenProblemInstructions{grid-area:instructions}
+  .questionBoard.wbFullscreen .fullscreenProblemContext:has(.fullscreenProblemDiagram)>.fullscreenChoices{grid-area:choices}
+  .questionBoard.wbFullscreen .fullscreenProblemContext:has(.fullscreenProblemDiagram)>.fullscreenProblemDiagram{
+    grid-area:diagram;
+    margin:0;
+    align-self:center;
+  }
+}
+
+/* Narrow screens keep the stacked layout, but preserve the SVG aspect ratio. */
+@media(max-width:900px){
+  .questionBoard.wbFullscreen .fullscreenProblemDiagram{margin-top:9px}
+  .questionBoard.wbFullscreen .fullscreenProblemDiagram svg{width:min(100%,460px)}
+}
+@media(max-width:470px){
+  .questionBoard.wbFullscreen .fullscreenProblemDiagram{max-height:none}
+  .questionBoard.wbFullscreen .fullscreenProblemDiagram svg{max-height:none;width:min(100%,380px)}
+}
