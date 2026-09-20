@@ -1,0 +1,79 @@
+name: Verify Statics Lab deployment
+
+on:
+  workflow_run:
+    workflows: ["Deploy Statics Lab to GitHub Pages"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+
+      - name: Verify deployed frontend byte-for-byte
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://weather-mister.github.io/statics-lab"
+
+          check_file() {
+            local remote_path="$1"
+            local local_path="$2"
+            local tmp
+            tmp="$(mktemp)"
+            curl --fail --silent --show-error --location --retry 8 --retry-delay 2 --retry-all-errors \
+              "$BASE/$remote_path" -o "$tmp"
+            cmp --silent "$local_path" "$tmp" || {
+              echo "::error::$remote_path differs from the repository copy"
+              exit 1
+            }
+            echo "OK $remote_path"
+          }
+
+          check_file "app.js" "public/app.js"
+          check_file "audit-fixes.js" "public/audit-fixes.js"
+          check_file "content.css" "public/content.css"
+          check_file "favicon.svg" "public/favicon.svg"
+          check_file "prequiz-content.js" "public/prequiz-content.js"
+          check_file "quiz1-upgrade.js" "public/quiz1-upgrade.js"
+          check_file "styles.css" "public/styles.css"
+          check_file "teaching-depth.js" "public/teaching-depth.js"
+          check_file "whiteboard-pro.js" "public/whiteboard-pro.js"
+          check_file "vendor/mathjax-tex-svg.js" "public/vendor/mathjax-tex-svg.js"
+
+          curl --fail --silent --show-error --location --retry 8 --retry-delay 2 --retry-all-errors \
+            "$BASE/" -o /tmp/live-index.html
+          grep -q '<title>Statics Lab</title>' /tmp/live-index.html
+          grep -q 'src="./app.js?v=34"' /tmp/live-index.html
+          grep -q 'href="./styles.css?v=22"' /tmp/live-index.html
+          grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html
+          echo "OK index.html and GitHub Pages path rewriting"
+
+      - name: Verify Supabase profile backend and CORS
+        shell: bash
+        run: |
+          set -euo pipefail
+          SUPABASE_URL="$(node -e "const s=require('fs').readFileSync('public/app.js','utf8'); const m=s.match(/const SUPABASE_URL = '([^']+)'/); if(!m) process.exit(1); process.stdout.write(m[1])")"
+          SUPABASE_KEY="$(node -e "const s=require('fs').readFileSync('public/app.js','utf8'); const m=s.match(/const SUPABASE_PUBLISHABLE_KEY = '([^']+)'/); if(!m) process.exit(1); process.stdout.write(m[1])")"
+
+          code="$(curl --silent --show-error \
+            --dump-header /tmp/backend-headers.txt \
+            --output /tmp/backend-body.txt \
+            --write-out '%{http_code}' \
+            --request POST "$SUPABASE_URL/rest/v1/rpc/load_statics_profile_v1" \
+            --header "apikey: $SUPABASE_KEY" \
+            --header "Content-Type: application/json" \
+            --header "Origin: https://weather-mister.github.io" \
+            --data '{"p_username":"x"}')"
+
+          test "$code" = "400"
+          grep -qi 'invalid_username' /tmp/backend-body.txt
+          grep -qi '^access-control-allow-origin:' /tmp/backend-headers.txt
+          echo "OK Supabase RPC is reachable with the deployed publishable key and returns CORS headers"
