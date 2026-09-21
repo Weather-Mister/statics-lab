@@ -94,7 +94,7 @@
         <h3>Lecture Challenge Bank</h3>
         <p>This section uses the same source geometry as the lecture examples. The dimensions are left in the figures on purpose: you have to extract the geometry, choose the model, build the vectors/FBD, and then solve. These are not recognition questions.</p>
         <div class="lectureChallengeGrid">${cards}</div>
-        <div class="lessonNote"><b>Quiz I change:</b> the five source-matched problems appear first in SOLVE and are also included in VERIFY. VERIFY has been stripped down to the harder multi-step set only.</div>
+        <div class="lessonNote"><b>Quiz I change:</b> the four source-matched figure problems appear first in SOLVE and are also included in VERIFY. VERIFY has been stripped down to the harder multi-step set only.</div>
       </div>
     </section>`;
 })();
