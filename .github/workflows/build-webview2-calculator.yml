@@ -1,0 +1,46 @@
+name: Build lightweight Windows calculator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "desktop-webview2/**"
+      - ".github/workflows/build-webview2-calculator.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore WebView2 SDK
+        run: msbuild desktop-webview2/StaticsCalculator.vcxproj /t:Restore /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Build x64 single EXE
+        run: msbuild desktop-webview2/StaticsCalculator.vcxproj /p:Configuration=Release /p:Platform=x64 /m
+
+      - name: Verify lightweight output
+        shell: pwsh
+        run: |
+          $exe = Get-Item "desktop-webview2/dist/Statics-Calculator.exe"
+          Write-Host ("Built {0:N2} MB" -f ($exe.Length / 1MB))
+          if ($exe.Length -gt 10MB) {
+            throw "The lightweight build unexpectedly exceeded 10 MB."
+          }
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: Statics-Calculator-WebView2
+          path: desktop-webview2/dist/Statics-Calculator.exe
+          if-no-files-found: error
+          retention-days: 30
