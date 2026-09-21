@@ -51,11 +51,8 @@
   const requestFit = () => {
     clearTimeout(fitTimer);
     fitTimer = setTimeout(() => {
-      const height = Math.ceil(Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight,
-        panel?.getBoundingClientRect().height || 0
-      ));
+      const rect = panel?.getBoundingClientRect();
+      const height = Math.ceil(rect?.height || panel?.scrollHeight || 0);
       if (Math.abs(height - lastHeight) < 2) return;
       lastHeight = height;
       send('fit:' + height);
@@ -69,8 +66,6 @@
   });
 
   window.addEventListener('load', requestFit, { once: true });
-  window.addEventListener('resize', requestFit);
-
   if (window.ResizeObserver && panel) {
     new ResizeObserver(requestFit).observe(panel);
   }
