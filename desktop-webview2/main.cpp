@@ -155,10 +155,15 @@ void PlaceNearCursor() {
     MONITORINFO info{ sizeof(info) };
     GetMonitorInfoW(monitor, &info);
 
-    int x = cursor.x - width / 2;
-    int y = cursor.y - DipToPx(80);
-    x = std::clamp(x, info.rcWork.left, std::max(info.rcWork.left, info.rcWork.right - width));
-    y = std::clamp(y, info.rcWork.top, std::max(info.rcWork.top, info.rcWork.bottom - height));
+    const int workLeft = static_cast<int>(info.rcWork.left);
+    const int workTop = static_cast<int>(info.rcWork.top);
+    const int workRight = static_cast<int>(info.rcWork.right);
+    const int workBottom = static_cast<int>(info.rcWork.bottom);
+
+    int x = static_cast<int>(cursor.x) - width / 2;
+    int y = static_cast<int>(cursor.y) - DipToPx(80);
+    x = std::clamp(x, workLeft, std::max(workLeft, workRight - width));
+    y = std::clamp(y, workTop, std::max(workTop, workBottom - height));
 
     SetWindowPos(g_hwnd, HWND_TOPMOST, x, y, 0, 0, SWP_NOSIZE | SWP_NOACTIVATE);
 }
