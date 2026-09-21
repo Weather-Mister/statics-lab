@@ -11,7 +11,8 @@
   let ans = 0;
   let history = [];
   let historyCursor = 0;
-  let angleMode = localStorage.getItem(STORAGE_ANGLE) === 'RAD' ? 'RAD' : 'DEG';
+  let angleMode = 'DEG';
+  try { angleMode = localStorage.getItem(STORAGE_ANGLE) === 'RAD' ? 'RAD' : 'DEG'; } catch (_) {}
   let previewFrame = 0;
   let lastResultValue = 0;
   let lastExactResult = null;
@@ -251,7 +252,7 @@
       button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
     modeReadout.textContent = angleMode + ' MODE';
-    localStorage.setItem(STORAGE_ANGLE, angleMode);
+    try { localStorage.setItem(STORAGE_ANGLE, angleMode); } catch (_) {}
     schedulePreview();
   }
 
