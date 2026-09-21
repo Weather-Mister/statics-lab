@@ -653,6 +653,18 @@ function nextLoadedLesson(){const idx=slotIndex();const next=lessonSlots.slice(i
 function setTab(tab){if(!['lesson','practice','mastery','reference'].includes(tab))return;state.tab=tab;persist();renderTabs();if(tab==='lesson')setupWhiteboard();if(tab==='practice')renderPractice();if(tab==='mastery')renderMastery();if(tab==='reference')renderReference();}
 function resetProgress(){if(!confirm('Reset lesson completion and practice answers? Notes and question whiteboards will be kept.'))return;state.completed={};state.practiceAnswers={};state.currentLesson='s01';state.tab='lesson';persist();render();}
 
+function renderQuestionGroups(qs){
+  let lastSection=null;
+  return qs.map((q,i)=>{
+    const section=String(q.section||'').trim();
+    const header=section&&section!==lastSection
+      ? `<div class="questionSectionHeader"><span>${escapeHtml(section)}</span><small>${section.includes('LECTURE')?'SOURCE-MATCHED / FIGURE-BASED':'MULTI-STEP / MEASURING'}</small></div>`
+      : '';
+    if(section)lastSection=section;
+    return header+practiceQuestionHtml(q,i);
+  }).join('');
+}
+
 function renderPractice(){
   const cur=currentSlot();const host=document.getElementById('practiceContentHost');
   if(!cur.available){host.innerHTML='<div class="intentionalBlank tallBlank"><span>—</span></div>';return;}
@@ -665,7 +677,7 @@ function renderPractice(){
     <h2>${escapeHtml(cur.title)}</h2>
     <p class="lessonLead">Questions below use only concepts and numerical relationships already present in the uploaded lecture. Feedback appears immediately after each answer.</p>
     <div class="practiceSummary"><span><b>${answered}</b> answered</span><span><b>${correct}</b> correct</span><button id="resetPracticeBtn" type="button">RESET THIS SET</button></div>
-    <div class="practiceList">${qs.map((q,i)=>practiceQuestionHtml(q,i)).join('')}</div>`;
+    <div class="practiceList">${renderQuestionGroups(qs)}</div>`;
   host.querySelectorAll('[data-choice]').forEach(btn=>btn.addEventListener('click',()=>answerChoice(btn.dataset.q,btn.dataset.choice)));
   host.querySelectorAll('[data-check-numeric]').forEach(btn=>btn.addEventListener('click',()=>answerNumeric(btn.dataset.checkNumeric)));
   host.querySelectorAll('.numericAnswerInput').forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();answerNumeric(inp.dataset.q);}}));
@@ -684,9 +696,9 @@ function renderMastery(){
   host.innerHTML=`
     <div class="sheetKicker">VERIFY · ${escapeHtml(cur.unit)}</div>
     <h2>Quiz I Mixed Mock Set</h2>
-    <p class="lessonLead">A fresh mixed set built only from the pre-Quiz-I lecture scope. Use the question whiteboards for full calculations and FBD sketches.</p>
+    <p class="lessonLead">Hard-only verification: source-matched lecture geometry first, then unfamiliar multi-step synthesis. Easy recognition and one-step substitution items are excluded.</p>
     <div class="practiceSummary masterySummary"><span><b>${answered}</b> answered</span><span><b>${correct}</b> correct</span><span><b>${qs.length}</b> total</span><button id="resetMasteryBtn" type="button">RESET MOCK SET</button></div>
-    <div class="practiceList">${qs.map((q,i)=>practiceQuestionHtml(q,i)).join('')}</div>`;
+    <div class="practiceList">${renderQuestionGroups(qs)}</div>`;
   host.querySelectorAll('[data-choice]').forEach(btn=>btn.addEventListener('click',()=>answerChoice(btn.dataset.q,btn.dataset.choice)));
   host.querySelectorAll('[data-check-numeric]').forEach(btn=>btn.addEventListener('click',()=>answerNumeric(btn.dataset.checkNumeric)));
   host.querySelectorAll('.numericAnswerInput').forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();answerNumeric(inp.dataset.q);}}));
