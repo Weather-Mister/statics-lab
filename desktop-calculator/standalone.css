@@ -1,26 +1,127 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .commandCenter,.calculatorToggle,.calculatorMobileToggle{display:none!important}
-.scientificCalc{
+
+.scientificCalc,
+.scientificCalc.positioned{
   position:absolute!important;
-  inset:0!important;
-  right:auto!important;
-  top:auto!important;
-  left:0!important;
+  inset:0 auto auto 0!important;
   width:100%!important;
-  height:100%!important;
-  max-height:none!important;
-  overflow:hidden!important;
+  height:auto!important;
+  min-height:100%!important;
+  max-height:100vh!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
   opacity:1!important;
   visibility:visible!important;
   transform:none!important;
   transform-origin:center!important;
   transition:none!important;
   box-shadow:none!important;
+  scrollbar-width:thin;
 }
-.scientificCalc.positioned{left:0!important;top:0!important;right:auto!important;width:100%!important}
-.calcTopbar{-webkit-app-region:drag;position:relative!important;top:auto!important}
-.calcTopActions,.calcTopActions *,.calcDisplay,.calcDisplay *,.calcKeys,.calcKeys *,.calcFooter,.calcFooter *{-webkit-app-region:no-drag}
-@media(max-width:780px){
-  .scientificCalc,.scientificCalc.positioned{inset:0!important;left:0!important;right:auto!important;top:0!important;width:100%!important;height:100%!important;max-height:none!important}
+
+.calcTopbar{
+  -webkit-app-region:drag;
+  position:relative!important;
+  top:auto!important;
+  min-height:64px!important;
+  padding:10px 12px!important;
+  gap:10px!important;
+}
+
+.calcIdentity{
+  flex:1 1 auto;
+  min-width:0!important;
+  gap:10px!important;
+  overflow:hidden;
+}
+
+.calcCode{
+  width:42px!important;
+  height:42px!important;
+  font-size:8px!important;
+  line-height:1!important;
+}
+
+.calcIdentity>div{min-width:0!important}
+
+.calcIdentity strong{
+  font-family:"Segoe UI",Arial,sans-serif!important;
+  font-size:13px!important;
+  line-height:1.15!important;
+  font-weight:700!important;
+  letter-spacing:.045em!important;
+  color:#26312e!important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.calcIdentity small{
+  margin-top:4px!important;
+  font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace!important;
+  font-size:7px!important;
+  line-height:1.35!important;
+  letter-spacing:.05em!important;
+}
+
+.calcTopActions{
+  flex:0 0 auto;
+  gap:6px!important;
+}
+
+.calcAngleSwitch{height:38px!important}
+.calcAngleOption{height:36px!important;min-width:46px!important}
+.calcCloseBtn{width:38px!important;height:38px!important}
+
+.calcDisplay{padding:14px 14px 12px!important}
+.calcDisplayMeta{margin-bottom:8px!important}
+.calcExpression{height:46px!important;padding:9px 11px!important}
+.calcResultRow{margin-top:8px!important;gap:8px!important}
+.calcKeyboardHint{margin-top:7px!important}
+
+.calcKeys{
+  gap:6px!important;
+  padding:11px 12px!important;
+}
+.calcKey{height:44px!important}
+
+.calcFooter{
+  padding:9px 12px 10px!important;
+  gap:12px!important;
+}
+
+.calcTopActions,.calcTopActions *,
+.calcDisplay,.calcDisplay *,
+.calcKeys,.calcKeys *,
+.calcFooter,.calcFooter *{-webkit-app-region:no-drag}
+
+@media(max-height:610px){
+  .calcTopbar{min-height:58px!important;padding:8px 10px!important}
+  .calcCode{width:38px!important;height:38px!important}
+  .calcAngleSwitch{height:34px!important}
+  .calcAngleOption{height:32px!important}
+  .calcCloseBtn{width:34px!important;height:34px!important}
+  .calcDisplay{padding:11px 12px 10px!important}
+  .calcExpression{height:42px!important}
+  .calcKeys{gap:4px!important;padding:8px 10px!important}
+  .calcKey{height:40px!important}
+  .calcFooter{padding:7px 10px 8px!important}
+}
+
+@media(max-width:430px){
+  .calcIdentity strong{font-size:12px!important}
+  .calcIdentity small{font-size:6.5px!important}
+  .calcTopbar{padding-left:10px!important;padding-right:10px!important}
+}
+
+@media(max-width:390px){
+  .calcIdentity small{max-width:170px!important}
+  .calcKeys{gap:4px!important;padding:8px!important}
+  .calcKey{height:41px!important;font-size:11px!important}
+  .calcFooter{display:block!important}
+  .calcFooter span{display:block}
+  .calcFooter span+span{margin-top:3px}
 }
