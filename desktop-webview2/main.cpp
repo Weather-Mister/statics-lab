@@ -416,10 +416,31 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
     g_mutex = CreateMutexW(nullptr, TRUE, L"Local\\StaticsCalculatorWebView2SingleInstance");
     if (g_mutex && GetLastError() == ERROR_ALREADY_EXISTS) {
         HWND existing = FindWindowW(kWindowClass, nullptr);
-        if (existing) PostMessageW(existing, WM_APP_SHOW, 0, 0);
+        HANDLE oldProcess = nullptr;
+        if (existing) {
+            DWORD oldPid = 0;
+            GetWindowThreadProcessId(existing, &oldPid);
+            if (oldPid) oldProcess = OpenProcess(SYNCHRONIZE, FALSE, oldPid);
+            PostMessageW(existing, WM_COMMAND, IDM_QUIT, 0);
+        }
         CloseHandle(g_mutex);
-        CoUninitialize();
-        return 0;
+        g_mutex = nullptr;
+
+        if (oldProcess) {
+            WaitForSingleObject(oldProcess, 3000);
+            CloseHandle(oldProcess);
+        } else {
+            Sleep(350);
+        }
+
+        g_mutex = CreateMutexW(nullptr, TRUE, L"Local\\StaticsCalculatorWebView2SingleInstance");
+        if (g_mutex && GetLastError() == ERROR_ALREADY_EXISTS) {
+            HWND stillRunning = FindWindowW(kWindowClass, nullptr);
+            if (stillRunning) PostMessageW(stillRunning, WM_APP_SHOW, 0, 0);
+            CloseHandle(g_mutex);
+            CoUninitialize();
+            return 0;
+        }
     }
 
     if (!PrepareAssets()) {
