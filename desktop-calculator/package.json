@@ -1,0 +1,39 @@
+{
+  "name": "statics-calculator-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone desktop build of the Statics Lab scientific calculator.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable --x64"
+  },
+  "build": {
+    "appId": "com.weathermister.staticscalculator",
+    "productName": "Statics Calculator",
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "calculator.js",
+      "calculator.css",
+      "standalone.css",
+      "standalone.js"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "Statics-Calculator-${version}.exe"
+    }
+  }
+}
