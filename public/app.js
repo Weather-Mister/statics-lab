@@ -355,7 +355,7 @@ const masteryBank = {s05:window.PREQUIZ?.masteryS05||[]};
 if(teaching){
   for(const [id,qs] of Object.entries(teaching.masteryAdditions||{})){
     const additions=(id==='s05'&&window.QUIZ1_HARD_ONLY)
-      ? qs.filter(q=>(window.QUIZ1_HARD_TEACHING_IDS||[]).includes(q.id))
+      ? qs.filter(q=>(window.QUIZ1_HARD_TEACHING_IDS||[]).includes(q.id)).map(q=>({...q,section:'HARD SYNTHESIS · UNFAMILIAR GEOMETRY'}))
       : qs;
     masteryBank[id]=[...(masteryBank[id]||[]),...additions];
   }
