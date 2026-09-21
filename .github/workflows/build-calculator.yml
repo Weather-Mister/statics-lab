@@ -26,13 +26,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Decode app icon
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force -Path build | Out-Null
-          [IO.File]::WriteAllBytes("build/icon.png", [Convert]::FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEK0lEQVR4nO2ZW0wUVxzGv9kFdmBdV1BYGkHFFUyMFVGKSkhrNHhHEdzE8OBLbe1Dm5pYFdGUCKlWG9MYfdB4eWhSTWBBMEoMXgCVICIaG0WlCRcREAsYCRGW3Z3pQ5Omw1lqlj0zf43ze9vvnDnnmy/nzP7PjJC4+wcZHzEGagPU6AFQG6BGD4DaADV6ANQGqNEDoDZAjR4AtQFq9ACoDVCjB0BtgBo9AGoD1OgBUBugJojnYOHmMGQnJyE13o64KVNgEUUEGZUZ55w4g6bObp7TBgS3AJLjpuPXHAcsoshrSE3gsgUsoogjmzd9cDcPcApg2ZzZsIaF8hhKc7hsgXhblE89z1mGqifPMDTi5jGNKnAJIMwUwmiSJKPi4SMew6uKMN4vQ1kLk/Bj5lq/rvmj4wXE4BAkRCtXzOCwC9nHTqJnYIC5ZvOiz5C7biWjH79WjdM1t/0z7QNN6wBJlpFbXAqX26PQJ4gm5G9kw4yNiMD2lcsYvbGtHWdv1nLxpHkh1PKqF0euXGX01Fl2ZCUn/fvbIAgozM6AGBys6DcwNIy84nJIMp9PmiSVYNHdRlQ/aWb0HavSEW21AgC2pC3G/GmxTJ/9ZZd8bpXxMu5nwH/Jz1yHjQvnKzRJkrEg/6cxr7GGhcL57deItFgUen1LK36pqMS5b7YiJMioaCu99wAF5ZcDtauA7Czw5u0Q9jkvYvRKXjQzDme+3MLcfOtffThcUcndB+lhqL6lFb/V1jG6NVRZVLm9XuQWl2LYzb+eID8NHrtWhaau/z8cHa28gWfdParMTx6AxythT/EFeCXJZ/v99uf4va5etfnJAwCA5BkzYDT4thJvi4JtolW1uckDiIucjJ1r0sdst4giDjg2wGAQVJmfNIBgoxE/O7KYYmc0C6ZPw1dfpKnigTSA7SuWY/YnNoXm8Uqoefon03fb0s8xLzaGuweyAFJn2ZGzJIXRT1TdxK6iErT19il0g0HAQUcmzCYTVx8kAUSYzSjMXg9h1LZ+9KILZ2/VwuX2IM9ZxvwzTA2fhL0Zq7l60TwAQQAKstZj8gSzQne5PdhXUg5J+qc0bOrsxqlq9ri7JnEu1iZ+ys2P5gHkLElBWoKd0Y9evc4s+1M1t/G4s4vpm5exCjHh4Vz8aBpAQrQN36cvZ/SG1jacv9PA6F5Jwl5nOVMCm00mHHBkjlk7+APX7wLvovllD1L2H/TrmrbePiwuOKSSI46vxUczpMLBRQ0CWgEhQUbMi41BavxMpq1vcDCQoTXD7wBKvtsGe1TkO/vdb38+LkNao8pDUJJknKtjH2rvI9wfgiMeLwovXkbzS3XO77wJOABZBt6OuNDR/xoNLe0outuIjv5+Ht40gctL0Q8Z8vcB1OgBUBugRg+A2gA1egDUBqjRA6A2QI0eALUBaj76AP4GD7MdIjFvYoQAAAAASUVORK5CYII="))
-
       - name: Install Electron builder
         run: npm install --no-audit --no-fund --save-dev electron@latest electron-builder@latest
 
