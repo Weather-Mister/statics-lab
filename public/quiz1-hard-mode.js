@@ -50,15 +50,7 @@
       instructions:'Treat each force pair as a couple vector. Determine all three signed components before selecting an answer.',
       solution:'The 30-lb pair gives Mx=−(30)(18)=−540 lb·in. The 20-lb pairs give My=+(20)(12)=+240 lb·in and Mz=+(20)(9)=+180 lb·in. Adding the couple vectors gives M=(−540 i+240 j+180 k) lb·in.'
     },
-    {
-      id:'lx05', section:'LECTURE CHALLENGE · EXACT SOURCE FIGURES', type:'numeric',
-      meta:'LECTURE 04 · EXACT FORCE–COUPLE REDUCTION',
-      prompt:'In the lecture lever problem shown, replace the given force and couple by one equivalent 400-N force. How far from shaft O is the application point C along the lever?',
-      answer:420, tol:1, unit:'mm',
-      diagram:figure('forceCouple','Lever with 400-N force, 200-N force pair, 300 mm length, and 60 degree angle'),
-      instructions:'Match the total original moment about O with the moment of the shifted 400-N force. Preserve the force exactly.',
-      solution:'The 400-N force at B gives −60 N·m about O. The two 200-N forces form a −24 N·m couple, so the total is −84 N·m. For a 400-N vertical force applied at C, 84=(OC cos60°)(400), hence OC=0.420 m=420 mm.'
-    }
+
   ];
 
   // The Quiz I SOLVE tab gets a distinct lecture-source section first.
