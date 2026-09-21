@@ -1,6 +1,6 @@
 {
   "name": "statics-calculator-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Standalone desktop build of the Statics Lab scientific calculator.",
   "main": "main.js",
