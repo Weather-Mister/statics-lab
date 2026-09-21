@@ -54,13 +54,13 @@
   ];
 
   // The Quiz I SOLVE tab gets a distinct lecture-source section first.
-  const oldPractice = (P.practiceS05 || []).filter(q => !String(q.id || '').startsWith('lx'));
+  const oldPractice = (P.practiceS05 || []).filter(q => !String(q.id || '').startsWith('lx')).map(q=>({...q,section:q.section||'QUIZ I REVIEW · FRESH GEOMETRY'}));
   P.practiceS05 = [...lectureQuestions, ...oldPractice];
 
   // VERIFY is intentionally rebuilt: no recognition-only definitions, trivial components,
   // or one-step formula substitution. Keep only multi-step setup/synthesis problems.
   const hardIds = new Set([
-    'q1m09','q1m11','q1m14',
+    'q1m09','q1m14',
     'q1h01','q1h02','q1h04','q1h05',
     'q1x02','q1x04','q1x05'
   ]);
@@ -76,6 +76,8 @@
   }));
 
   P.masteryS05 = [...lectureMastery, ...existingHard];
+  window.QUIZ1_HARD_ONLY = true;
+  window.QUIZ1_HARD_TEACHING_IDS = ['q1x02','q1x04','q1x05'];
 
   const cards = lectureQuestions.map(q => `
     <article class="lectureChallengeCard">
