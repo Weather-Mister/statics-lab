@@ -29,10 +29,11 @@
       "target": [
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
-      "icon": "build/icon.png",
       "artifactName": "Statics-Calculator-${version}.exe"
     }
   }
