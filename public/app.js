@@ -353,7 +353,12 @@ if(teaching){
 }
 const masteryBank = {s05:window.PREQUIZ?.masteryS05||[]};
 if(teaching){
-  for(const [id,qs] of Object.entries(teaching.masteryAdditions||{})) masteryBank[id]=[...(masteryBank[id]||[]),...qs];
+  for(const [id,qs] of Object.entries(teaching.masteryAdditions||{})){
+    const additions=(id==='s05'&&window.QUIZ1_HARD_ONLY)
+      ? qs.filter(q=>(window.QUIZ1_HARD_TEACHING_IDS||[]).includes(q.id))
+      : qs;
+    masteryBank[id]=[...(masteryBank[id]||[]),...additions];
+  }
 }
 
 function referenceHtml(){return `
