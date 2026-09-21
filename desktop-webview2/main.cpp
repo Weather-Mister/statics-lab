@@ -36,6 +36,8 @@ ComPtr<ICoreWebView2Controller> g_controller;
 ComPtr<ICoreWebView2> g_webview;
 std::filesystem::path g_assetDir;
 bool g_quitting = false;
+bool g_contentReady = false;
+bool g_showWhenReady = true;
 int g_lastContentHeightDip = 0;
 
 int DipToPx(int dip) {
@@ -121,7 +123,8 @@ void FitWindowToContent(int contentHeightDip) {
 
     const int widthDip = 440;
     const int workHeightDip = PxToDip(info.rcWork.bottom - info.rcWork.top);
-    const int targetHeightDip = std::clamp(contentHeightDip, 540, std::max(540, workHeightDip - 18));
+    const int maxHeightDip = std::max(360, workHeightDip - 18);
+    const int targetHeightDip = std::clamp(contentHeightDip, 360, maxHeightDip);
     const int widthPx = DipToPx(widthDip);
     const int heightPx = DipToPx(targetHeightDip);
 
@@ -132,6 +135,11 @@ void FitWindowToContent(int contentHeightDip) {
     SetWindowPos(g_hwnd, HWND_TOPMOST, 0, 0, widthPx, heightPx,
                  SWP_NOMOVE | SWP_NOACTIVATE);
     KeepWindowOnScreen();
+
+    if (!g_contentReady) {
+        g_contentReady = true;
+        if (g_showWhenReady) PostMessageW(g_hwnd, WM_APP_SHOW, 0, 0);
+    }
 }
 
 void FocusExpression() {
@@ -170,6 +178,11 @@ void PlaceNearCursor() {
 
 void ShowCalculator() {
     if (!g_hwnd) return;
+    if (!g_contentReady) {
+        g_showWhenReady = true;
+        return;
+    }
+    g_showWhenReady = false;
     PlaceNearCursor();
     ShowWindow(g_hwnd, SW_SHOWNORMAL);
     SetWindowPos(g_hwnd, HWND_TOPMOST, 0, 0, 0, 0,
@@ -179,6 +192,7 @@ void ShowCalculator() {
 }
 
 void HideCalculator() {
+    g_showWhenReady = false;
     if (g_hwnd) ShowWindow(g_hwnd, SW_HIDE);
 }
 
@@ -425,7 +439,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
     RegisterClassExW(&wc);
 
     const int width = MulDiv(440, GetDpiForSystem(), 96);
-    const int height = MulDiv(640, GetDpiForSystem(), 96);
+    const int height = MulDiv(600, GetDpiForSystem(), 96);
 
     g_hwnd = CreateWindowExW(
         WS_EX_TOPMOST | WS_EX_APPWINDOW,
