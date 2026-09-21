@@ -17,13 +17,19 @@
       solution:'From A to B, AB = (−40 i + 80 j + 30 k) m and |AB| = 94.3 m. Therefore F = 2500 AB/|AB| = (−1060 i + 2120 j + 795 k) N. Since cos θx = Fx/F = −1060/2500, θx = 115.1°.'
     },
     {
-      id:'lx02', section:'LECTURE CHALLENGE · EXACT SOURCE FIGURES', type:'numeric',
+      id:'lx02', section:'LECTURE CHALLENGE · EXACT SOURCE FIGURES', type:'mcq',
       meta:'LECTURE 04 · EXACT PLATE + WIRE',
-      prompt:'For the lecture rectangular-plate problem shown, wire CD has tension 200 N. Determine the x-component of the moment about A of the force exerted by the wire at C.',
-      answer:-7.68, tol:.04, unit:'N·m',
+      prompt:'The lecture asks for the moment about A of the 200-N force exerted by wire CD at C. Which complete moment vector is correct?',
+      options:[
+        '(−7.68 i + 28.8 j + 28.8 k) N·m',
+        '(+7.68 i + 28.8 j − 28.8 k) N·m',
+        '(−7.68 i − 28.8 j + 28.8 k) N·m',
+        '(−120 i + 96 j − 128 k) N·m'
+      ],
+      correct:'a',
       diagram:figure('plateWire','Rectangular plate supported at A and B with wire CD and dimensions'),
-      instructions:'The force direction must come from C→D. Form the force vector first, then use M_A = r_CA × F.',
-      solution:'Using the shown geometry, r_CA=(0.300 i + 0.080 k) m. CD=(−0.300 i +0.240 j−0.320 k) m, |CD|=0.500 m, so F=200(CD/|CD|)=(−120 i+96 j−128 k) N. Thus M_A=r_CA×F=(−7.68 i+28.8 j+28.8 k) N·m, so M_Ax=−7.68 N·m.'
+      instructions:'Do not choose by inspection. Build C→D, normalize it to get the 200-N force, form r_CA, and evaluate the full cross product.',
+      solution:'Using the shown geometry, r_CA=(0.300 i + 0.080 k) m. CD=(−0.300 i +0.240 j−0.320 k) m, |CD|=0.500 m, so F=(−120 i+96 j−128 k) N. Therefore M_A=r_CA×F=(−7.68 i+28.8 j+28.8 k) N·m.'
     },
     {
       id:'lx03', section:'LECTURE CHALLENGE · EXACT SOURCE FIGURES', type:'mcq',
