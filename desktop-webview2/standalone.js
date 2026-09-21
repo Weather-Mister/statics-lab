@@ -7,23 +7,12 @@
   const input = document.getElementById('calcExpression');
   const topbar = panel?.querySelector('.calcTopbar');
   const host = window.chrome?.webview;
-  const fallback = document.getElementById('bootFallback');
 
   const send = (message) => {
     try { host?.postMessage(message); } catch (_) {}
   };
 
-  if (!panel) {
-    if (fallback) {
-      fallback.hidden = false;
-      fallback.textContent = 'Calculator failed to initialize. Please reopen the app.';
-    }
-    send('fit:220');
-    return;
-  }
-
-  if (fallback) fallback.remove();
-  if (toggle && !panel.classList.contains('open')) toggle.click();
+  if (toggle && panel && !panel.classList.contains('open')) toggle.click();
 
   if (close) {
     close.addEventListener('click', (event) => {
@@ -62,8 +51,11 @@
   const requestFit = () => {
     clearTimeout(fitTimer);
     fitTimer = setTimeout(() => {
-      const rect = panel?.getBoundingClientRect();
-      const height = Math.ceil(rect?.height || panel?.scrollHeight || 0);
+      const height = Math.ceil(Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight,
+        panel?.getBoundingClientRect().height || 0
+      ));
       if (Math.abs(height - lastHeight) < 2) return;
       lastHeight = height;
       send('fit:' + height);
@@ -77,6 +69,8 @@
   });
 
   window.addEventListener('load', requestFit, { once: true });
+  window.addEventListener('resize', requestFit);
+
   if (window.ResizeObserver && panel) {
     new ResizeObserver(requestFit).observe(panel);
   }
