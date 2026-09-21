@@ -1,0 +1,7 @@
+#include "resource.h"
+
+IDR_INDEX_HTML       RCDATA "index.html"
+IDR_CALCULATOR_JS    RCDATA "calculator.js"
+IDR_CALCULATOR_CSS   RCDATA "calculator.css"
+IDR_STANDALONE_CSS   RCDATA "standalone.css"
+IDR_STANDALONE_JS    RCDATA "standalone.js"
