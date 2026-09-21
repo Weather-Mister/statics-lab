@@ -1,0 +1,64 @@
+
+.questionSectionHeader{
+  margin:28px 0 14px;
+  padding:14px 16px;
+  border:1px solid rgba(99,213,221,.28);
+  border-left:4px solid var(--cyan);
+  background:linear-gradient(90deg,rgba(99,213,221,.10),rgba(99,213,221,.025));
+  display:flex;align-items:center;justify-content:space-between;gap:16px
+}
+.questionSectionHeader span{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;font-weight:900;letter-spacing:.13em;color:var(--cyan)
+}
+.questionSectionHeader small{
+  color:#8fa0b2;font-size:9px;letter-spacing:.04em;text-align:right
+}
+.lectureExactFigure{
+  margin:14px 0 16px;
+  padding:12px;
+  background:#f4f5ef;
+  border:1px solid #cbd2cc;
+  box-shadow:0 8px 24px rgba(0,0,0,.08)
+}
+.lectureExactFigure img{
+  display:block;
+  width:min(100%,720px);
+  max-height:520px;
+  object-fit:contain;
+  margin:auto;
+  mix-blend-mode:multiply
+}
+.lectureExactFigure figcaption{
+  margin-top:9px;
+  color:#62716b;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.09em;
+  text-align:center
+}
+.lectureChallengeGrid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px
+}
+.lectureChallengeCard{
+  border:1px solid #cbd4cf;
+  background:#f5f6f0;
+  padding:12px;
+  color:#17212a
+}
+.lectureChallengeCard .lectureExactFigure{margin:0 0 11px;box-shadow:none}
+.lectureChallengeCopy{display:grid;gap:6px}
+.lectureChallengeCopy>span{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:8px;font-weight:900;letter-spacing:.09em;color:#2b7c84
+}
+.lectureChallengeCopy>b{font-size:12px;line-height:1.45}
+.lectureChallengeCopy>small{font-size:9px;line-height:1.4;color:#66746d}
+.practiceQuestion .questionDiagram .lectureExactFigure{max-width:760px}
+.fullscreenProblemDiagram .lectureExactFigure{max-width:900px}
+@media(max-width:760px){
+  .lectureChallengeGrid{grid-template-columns:1fr}
+  .questionSectionHeader{align-items:flex-start;flex-direction:column}
+  .questionSectionHeader small{text-align:left}
+}
