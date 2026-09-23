@@ -7,7 +7,7 @@
   <title>Statics Lab</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <script>
-    window.__STATICS_BUILD__ = '41';
+    window.__STATICS_BUILD__ = '42';
     window.MathJax = {
       tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
       options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
@@ -120,6 +120,7 @@
           <button class="studyTab" data-tab="practice" type="button"><span>02</span><b>SOLVE</b><small>Practice</small></button>
           <button class="studyTab" data-tab="mastery" type="button"><span>03</span><b>VERIFY</b><small>Mastery</small></button>
           <button class="studyTab" data-tab="reference" type="button"><span>04</span><b>REFERENCE</b><small>Glossary · formulas · units</small></button>
+          <button id="bookDrillTab" class="studyTab" data-tab="book" type="button" hidden><span>05</span><b>BOOK</b><small>Quiz I · textbook drill</small></button>
         </nav>
 
         <section id="lessonView" class="view active">
@@ -180,6 +181,15 @@
             <div id="referenceContentHost"></div>
           </article>
         </section>
+
+        <section id="bookView" class="view">
+          <article class="drawingSheet problemSheet bookDrillSheet">
+            <div class="sheetCorner tl"></div><div class="sheetCorner tr"></div><div class="sheetCorner bl"></div><div class="sheetCorner br"></div>
+            <div class="sheetTitleBlock"><div><span>BOOK DRILL</span><small>EXACT TEXTBOOK PROBLEMS · ANSWERS CHECKED AGAINST APPENDIX</small></div><div class="sheetRevision"><span>SET</span><b>B</b></div></div>
+            <div class="sheetBody"><div id="bookDrillHost"></div></div>
+          </article>
+        </section>
+
       </main>
     </div>
   </div>
@@ -210,7 +220,8 @@
   </div>
 
   <script src="./prequiz-content.js?v=34"></script>
-  <script src="./statics-diagrams.js?v=5"></script>\n  <script src="./quiz1-upgrade.js?v=35"></script>
+  <script src="./statics-diagrams.js?v=5"></script>
+  <script src="./quiz1-upgrade.js?v=35"></script>
   <script src="./teaching-depth.js?v=35"></script>
   <script src="./audit-fixes.js?v=36"></script>
   <script src="./lecture-guy-wire.js?v=38"></script>
@@ -220,6 +231,7 @@
   <script src="./quiz1-hard-mode.js?v=40"></script>
   <script src="./whiteboard-pro.js?v=37"></script>
   <script src="./app.js?v=40"></script>
+  <script src="./book-drill.js?v=42"></script>
   <script src="./calculator.js?v=4"></script>
   <script src="./visual-explanations.js?v=1"></script>
   <script src="./worked-example-visuals.js?v=1"></script>
