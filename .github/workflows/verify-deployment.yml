@@ -142,8 +142,8 @@ jobs:
         run: |
           set -euo pipefail
           node --check public/book-drill.js
-          grep -q 'TEXTBOOK PROBLEM 2.5' public/book-drill.js
-          grep -q 'TEXTBOOK PROBLEM 4.31' public/book-drill.js
+          grep -q "id:'2.5'" public/book-drill.js
+          grep -q "id:'4.31'" public/book-drill.js
           grep -q '18 EXACT PROBLEMS' public/book-drill.js
           grep -q 'id="bookDrillTab"' public/index.html
           grep -q 'src="./book-drill.js?v=42"' public/index.html
