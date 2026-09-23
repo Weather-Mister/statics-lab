@@ -138,6 +138,16 @@ jobs:
           grep -q "outline:1px dotted" public/old-pc.css
           grep -q "prefers-reduced-motion" public/old-pc.css
 
+      - name: Verify Quiz I textbook drill
+        run: |
+          set -euo pipefail
+          node --check public/book-drill.js
+          grep -q 'TEXTBOOK PROBLEM 2.5' public/book-drill.js
+          grep -q 'TEXTBOOK PROBLEM 4.31' public/book-drill.js
+          grep -q '18 EXACT PROBLEMS' public/book-drill.js
+          grep -q 'id="bookDrillTab"' public/index.html
+          grep -q 'src="./book-drill.js?v=42"' public/index.html
+
       - name: Verify deployed frontend byte-for-byte
         shell: bash
         run: |
@@ -160,6 +170,8 @@ jobs:
 
           check_file "" "public/index.html"
           check_file "app.js" "public/app.js"
+          check_file "book-drill.js" "public/book-drill.js"
+          check_file "book-drill-sprite.webp" "public/book-drill-sprite.webp"
           check_file "audit-fixes.js" "public/audit-fixes.js"
           check_file "calculator.css" "public/calculator.css"
           check_file "calculator.js" "public/calculator.js"
@@ -181,7 +193,7 @@ jobs:
           curl --fail --silent --show-error --location --retry 8 --retry-delay 2 --retry-all-errors \
             "$BASE/?verify=$GITHUB_SHA" -o /tmp/live-index.html
           grep -q '<title>Statics Lab</title>' /tmp/live-index.html
-          grep -q 'src="./app.js?v=34"' /tmp/live-index.html
+          grep -q 'src="./app.js?v=40"' /tmp/live-index.html
           grep -q 'href="./styles.css?v=22"' /tmp/live-index.html
           grep -q 'src="./vendor/mathjax-tex-svg.js?v=22"' /tmp/live-index.html
           grep -q 'href="./calculator.css?v=4"' /tmp/live-index.html
