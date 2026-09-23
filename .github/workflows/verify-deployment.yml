@@ -145,8 +145,9 @@ jobs:
           grep -q "id:'2.5'" public/book-drill.js
           grep -q "id:'4.31'" public/book-drill.js
           grep -q '18 EXACT PROBLEMS' public/book-drill.js
+          grep -q 'book-drill-sprite.webp?v=44' public/book-drill.js
           grep -q 'id="bookDrillTab"' public/index.html
-          grep -q 'src="./book-drill.js?v=42"' public/index.html
+          grep -q 'src="./book-drill.js?v=44"' public/index.html
 
       - name: Verify deployed frontend byte-for-byte
         shell: bash

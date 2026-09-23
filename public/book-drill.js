@@ -36,14 +36,10 @@
     {title:'UNIT 3 · Rigid-body equilibrium in 2D', note:'Three textbook equilibrium problems spanning a basic couple, geometry limits, and reactions/cable force.', ids:['4.1','4.13','4.31']}
   ];
 
-  const coords = Array.from({length:18}, (_, i) => {
-    const col = i % 3;
-    const row = Math.floor(i / 3);
-    return {
-      x: ['0%','50%','100%'][col],
-      y: ['0%','20%','40%','60%','80%','100%'][row]
-    };
-  });
+  const coords = Array.from({length:18}, (_, i) => ({
+    col: i % 3,
+    row: Math.floor(i / 3)
+  }));
 
   const style = document.createElement('style');
   style.textContent = `
@@ -68,7 +64,8 @@
     .bookProblemId{font:900 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.09em;color:#2f7774}
     .bookDifficulty{font:900 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;border:1px solid #b8afa1;background:#eee7da;color:#6b6f69;padding:4px 6px}
     .bookProblemMethod{font-size:10px;line-height:1.4;font-weight:800;color:#45514b}
-    .bookScan{width:100%;aspect-ratio:5/3;background-image:url('./book-drill-sprite.webp');background-size:300% 600%;background-repeat:no-repeat;background-position:var(--book-x) var(--book-y);background-color:#fff;border:1px solid #cec5b7}
+    .bookScan{width:100%;aspect-ratio:5/3;position:relative;overflow:hidden;background:#fff;border:1px solid #cec5b7}
+    .bookScan img{position:absolute;display:block;max-width:none;width:300%;height:600%;left:calc(var(--book-col) * -100%);top:calc(var(--book-row) * -100%);object-fit:fill;user-select:none;-webkit-user-drag:none;pointer-events:none}
     .bookAnswer{border-top:1px solid #d2c9bb;padding-top:7px}
     .bookAnswer summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;font:900 8px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;color:#2f7774;padding:4px 0}
     .bookAnswer summary::-webkit-details-marker{display:none}
@@ -89,7 +86,9 @@
           <span class="bookDifficulty">${p.level}</span>
         </div>
         <div class="bookProblemMethod">${p.method}</div>
-        <div class="bookScan" role="img" aria-label="Exact textbook scan for Problem ${p.id}" style="--book-x:${pos.x};--book-y:${pos.y}"></div>
+        <div class="bookScan" aria-label="Exact textbook scan for Problem ${p.id}" style="--book-col:${pos.col};--book-row:${pos.row}">
+          <img src="./book-drill-sprite.webp?v=44" alt="Textbook Problem ${p.id}" loading="lazy" decoding="async" />
+        </div>
         <details class="bookAnswer">
           <summary>Checked textbook answer</summary>
           <div class="bookAnswerBody">
