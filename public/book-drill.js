@@ -26,14 +26,14 @@
   ];
 
   const groups = [
-    {title:'01 · Planar force addition / resultant', note:'Two direct textbook problems: triangle-law geometry and component addition.', ids:['2.5','2.35']},
-    {title:'02 · Particle equilibrium in 2D', note:'Two cable/particle equilibrium setups. Draw the particle FBD first.', ids:['2.49','2.55']},
-    {title:'03 · 3D force vectors and direction angles', note:'Two problems on Cartesian components, resultants, and coordinate direction angles.', ids:['2.84','2.94']},
-    {title:'04 · Particle equilibrium in 3D', note:'Two full three-dimensional cable-equilibrium problems.', ids:['2.96','2.103']},
-    {title:'05 · Moment of a force about a point', note:'Two problems using r × F or equivalent moment geometry.', ids:['3.23','3.49']},
-    {title:'06 · Moment about an axis', note:'Two direct arbitrary-axis moment problems: compute a moment, then project it onto the axis.', ids:['3.53','3.57']},
-    {title:'07 · Couples and equivalent force-couple systems', note:'Three problems: couple magnitude, moving forces, and replacing a force-couple system by an equivalent result.', ids:['3.70','3.82','3.89']},
-    {title:'08 · Rigid-body equilibrium in 2D', note:'Three textbook equilibrium problems spanning a basic couple, geometry limits, and reactions/cable force.', ids:['4.1','4.13','4.31']}
+    {title:'UNIT 1 · Planar force addition / resultant', note:'Two direct textbook problems: triangle-law geometry and component addition.', ids:['2.5','2.35']},
+    {title:'UNIT 1 · Particle equilibrium in 2D', note:'Two cable/particle equilibrium setups. Draw the particle FBD first.', ids:['2.49','2.55']},
+    {title:'UNIT 2 · 3D force vectors and direction angles', note:'Two problems on Cartesian components, resultants, and coordinate direction angles.', ids:['2.84','2.94']},
+    {title:'UNIT 2 · Particle equilibrium in 3D', note:'Two full three-dimensional cable-equilibrium problems.', ids:['2.96','2.103']},
+    {title:'UNIT 2 · Moment of a force about a point', note:'Two problems using r × F or equivalent moment geometry.', ids:['3.23','3.49']},
+    {title:'UNIT 3 · Moment about an axis', note:'Two direct arbitrary-axis moment problems: compute a moment, then project it onto the axis.', ids:['3.53','3.57']},
+    {title:'UNIT 3 · Couples and equivalent force-couple systems', note:'Three problems: couple magnitude, moving forces, and replacing a force-couple system by an equivalent result.', ids:['3.70','3.82','3.89']},
+    {title:'UNIT 3 · Rigid-body equilibrium in 2D', note:'Three textbook equilibrium problems spanning a basic couple, geometry limits, and reactions/cable force.', ids:['4.1','4.13','4.31']}
   ];
 
   const coords = Array.from({length:18}, (_, i) => {
@@ -109,9 +109,9 @@
             <div class="sheetKicker">QUIZ I · EXACT TEXTBOOK DRILL</div>
             <h2>Book problems, grouped by solving method</h2>
           </div>
-          <div class="bookStats"><span>18 EXACT PROBLEMS</span><span>8 METHODS</span><span>CH. 2–4</span></div>
+          <div class="bookStats"><span>18 EXACT PROBLEMS</span><span>8 METHODS</span><span>COURSE UNITS 1–3</span><span>TEXTBOOK CH. 2–4</span></div>
         </div>
-        <p>These are direct scans from your provided <em>Vector Mechanics for Engineers: Statics</em> textbook—not rewritten variants. The selection follows the pre-Quiz-I course methods. Most methods have 2–3 problems; only the basic entry-level methods stay lighter.</p>
+        <p>These are direct scans from your provided <em>Vector Mechanics for Engineers: Statics</em> textbook—not rewritten variants. The selection follows pre-Quiz-I course Units 1–3 and their solving methods. Most methods have 2–3 problems; only the basic entry-level methods stay lighter.</p>
         <div class="bookSourceNote"><b>Answer check:</b> every displayed answer below was cross-checked against the textbook's own <em>Answers to Problems</em> appendix. Use the scan as the authoritative problem statement and figure.</div>
         <div class="bookAnswerControls"><button type="button" data-book-open>SHOW ALL ANSWERS</button><button type="button" data-book-close>HIDE ALL ANSWERS</button></div>
       </section>
