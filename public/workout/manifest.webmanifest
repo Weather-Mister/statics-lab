@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Steady Workout Tracker",
   "short_name": "Steady",
-  "description": "Your weekly gym plan, one steady step at a time.",
+  "description": "Weekly workouts, exercise instructions and workout logs.",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
